@@ -12,7 +12,7 @@ const GRAVITY := 900.0
 @export var jump_interval: float = 2.5
 
 # === PRIVATE VARIABLES ===
-var _jump_timer : float = 0.0
+var _jump_timer : float = 1.5
 var _player     : Node2D = null
 
 # === BUILT-IN CALLBACKS ===

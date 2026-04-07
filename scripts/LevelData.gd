@@ -40,3 +40,7 @@ extends Resource
 
 # ── PLATAFORMAS PROCEDURALES ─────────────────
 @export var platform_rects : Array[Rect2] = []
+
+# ── OBSTÁCULOS DE PARKOUR ─────────────────────
+# Rect2(x, y, width, height) — la barrera bloquea al jugador de pie, no al agachado
+@export var crouch_barrier_rects : Array[Rect2] = []

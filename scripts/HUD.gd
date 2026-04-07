@@ -163,9 +163,7 @@ func _process(_delta: float) -> void:
 	if boss and is_instance_valid(boss) and "health" in boss:
 		_update_boss_bar(boss.health)
 	# Actualizar timer
-	var timer_node := get_tree().get_first_node_in_group("level_timer") if _timer_label and _timer_label.visible else null
-	if timer_node == null:
-		# Buscar LevelTimer en el árbol
+	if _timer_label and _timer_label.visible:
 		for node in get_tree().get_nodes_in_group("level"):
 			var t := node.get_node_or_null("LevelTimer")
 			if t and "elapsed" in t:

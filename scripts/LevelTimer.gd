@@ -22,7 +22,7 @@ func stop() -> String:
 	if tier != "none":
 		GameManager.set_best_time(level_key, elapsed)
 		emit_signal("medal_earned", tier)
-	elif not GameManager.get_best_time(level_key) > 0:
+	elif GameManager.get_best_time(level_key) <= 0:
 		GameManager.set_best_time(level_key, elapsed)
 	return tier
 

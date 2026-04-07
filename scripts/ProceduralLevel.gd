@@ -50,6 +50,7 @@ func _ready() -> void:
 	_spawn_pins()
 	_spawn_zones()
 	_spawn_platforms()
+	_spawn_crouch_barriers()
 	_spawn_level_end()
 	_spawn_dialog()
 	_spawn_yeli()
@@ -125,7 +126,7 @@ func _apply_theme() -> void:
 
 func _spawn_player() -> void:
 	_player = PLAYER_SCENE.instantiate()
-	_player.position = Vector2(60, 258)
+	_player.position = Vector2(80, 258)
 	add_child(_player)
 	_player.player_died.connect(_on_player_died)
 	_player.collectible_found.connect(func(id): GameManager.collect_pin(id))
@@ -234,6 +235,30 @@ func _spawn_platforms() -> void:
 			plat_root.add_child(body)
 		else:
 			add_child(body)
+
+func _spawn_crouch_barriers() -> void:
+	for rect in data.crouch_barrier_rects:
+		var barrier := StaticBody2D.new()
+		barrier.position = rect.position + Vector2(rect.size.x * 0.5, rect.size.y * 0.5)
+		var col   := CollisionShape2D.new()
+		var shape := RectangleShape2D.new()
+		shape.size = rect.size
+		col.shape  = shape
+		barrier.add_child(col)
+		var vis := ColorRect.new()
+		vis.size     = rect.size
+		vis.position = -rect.size * 0.5
+		vis.color    = Color(0.32, 0.22, 0.14)
+		vis.z_index  = 1
+		barrier.add_child(vis)
+		# Diagonal stripes overlay
+		for i in int(rect.size.x / 16):
+			var stripe := ColorRect.new()
+			stripe.size     = Vector2(4, rect.size.y)
+			stripe.position = Vector2(-rect.size.x * 0.5 + i * 16 + 6, -rect.size.y * 0.5)
+			stripe.color    = Color(0.22, 0.14, 0.08, 0.6)
+			vis.add_child(stripe)
+		add_child(barrier)
 
 func _spawn_level_end() -> void:
 	var end  := Marker2D.new()
