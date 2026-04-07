@@ -131,7 +131,7 @@ func _connect_boss(boss: Node) -> void:
 	if not boss.has_signal("boss_defeated"): return
 	if "max_health" in boss:
 		_boss_max    = boss.max_health
-		_boss_label.text = boss.get("world_id") if "world_id" in boss else "JEFE"
+		_boss_label.text = "Mundo " + str(boss.get("world_id")) if "world_id" in boss else "JEFE"
 		_boss_bar_bg.visible = true
 		_update_boss_bar(boss.max_health)
 	if boss.has_signal("phase_changed"):

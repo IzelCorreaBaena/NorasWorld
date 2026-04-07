@@ -33,7 +33,7 @@ func _physics_process(delta: float) -> void:
 		if _jump_timer <= 0.0:
 			_jump_timer = jump_interval
 			if _player and is_instance_valid(_player):
-				var dir := sign(_player.global_position.x - global_position.x)
+				var dir = sign(_player.global_position.x - global_position.x)
 				velocity.x = dir * speed * 2.0
 				velocity.y = jump_force
 

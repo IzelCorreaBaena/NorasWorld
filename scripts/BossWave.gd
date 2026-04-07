@@ -1,4 +1,4 @@
-extends Boss
+extends "res://scripts/Boss.gd"
 # ── JEFE MUNDO 1: LA OLA PERFECTA ────────────
 # Mecánica: scroll lateral automático, la ola avanza desde la derecha.
 # Nora debe correr, saltar obstáculos y llegar al final.

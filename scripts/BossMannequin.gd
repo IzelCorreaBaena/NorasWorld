@@ -1,4 +1,4 @@
-extends Boss
+extends "res://scripts/Boss.gd"
 # ── JEFE MUNDO 2: EL MANIQUÍ ─────────────────
 # Copia el último movimiento de Nora con delay.
 # Para dañarle: hacer que se golpee contra las paredes.
@@ -67,10 +67,10 @@ func _interpolate_history(t: float) -> Vector2:
 		if move_history[i]["time"] <= t:
 			var a : Dictionary = move_history[i]
 			var b : Dictionary = move_history[min(i + 1, move_history.size() - 1)]
-			var dt := b["time"] - a["time"]
+			var dt = b["time"] - a["time"]
 			if dt <= 0:
 				return a["pos"]
-			var frac := (t - a["time"]) / dt
+			var frac = (t - a["time"]) / dt
 			return a["pos"].lerp(b["pos"], frac)
 	return move_history[0]["pos"]
 
