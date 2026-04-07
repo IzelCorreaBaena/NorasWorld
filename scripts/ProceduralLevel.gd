@@ -140,6 +140,7 @@ func _spawn_hud() -> void:
 	_hud = HUD_SCENE.instantiate()
 	add_child(_hud)
 	_hud.set_world_name(data.level_name)
+	_hud.setup_level_progress(data.level_length)
 
 func _spawn_enemies() -> void:
 	for i in data.enemy_positions.size():
@@ -279,6 +280,10 @@ func _spawn_items() -> void:
 		if i < data.item_types.size() and data.item_types[i] != "":
 			item.item_type = data.item_types[i]
 		add_child(item)
+		item.item_collected.connect(func(type):
+			if _hud and _hud.has_method("show_item_pickup"):
+				_hud.show_item_pickup(type)
+		)
 
 func _spawn_npcs() -> void:
 	for i in data.npc_positions.size():

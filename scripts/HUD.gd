@@ -11,14 +11,31 @@ var _boss_bar_fill: ColorRect
 var _boss_label   : Label
 var _boss_max     : int = 0
 
+var _damage_flash : ColorRect
+var _last_hp      : int = 3
+
+var _progress_bar      : ColorRect
+var _progress_fill     : ColorRect
+var _level_length      : float = 0.0
+
+var _item_notif_label : Label
+
 func _ready() -> void:
 	GameManager.health_changed.connect(_update_hearts)
 	GameManager.pin_collected.connect(_update_pins)
 	_update_hearts(GameManager.nora["health"])
 	_update_pins("")
 	_build_timer()
+	_build_item_notif()
 	_build_boss_bar()
 	_build_medal_label()
+	_build_damage_flash()
+	GameManager.health_changed.connect(func(hp):
+		if hp < _last_hp:
+			_show_damage_flash()
+		_last_hp = hp
+	)
+	_last_hp = GameManager.nora["health"]
 	# Conectar jefes al health bar automáticamente
 	await get_tree().process_frame
 	for boss in get_tree().get_nodes_in_group("boss"):
@@ -158,6 +175,77 @@ func _update_boss_bar(current_health: int) -> void:
 	elif pct > 0.33: _boss_bar_fill.color = Color(0.85, 0.55, 0.10)
 	else:            _boss_bar_fill.color = Color(0.90, 0.20, 0.60)
 
+# ── FLASH DE DAÑO ────────────────────────────
+func _build_damage_flash() -> void:
+	_damage_flash = ColorRect.new()
+	_damage_flash.set_anchors_preset(Control.PRESET_FULL_RECT)
+	_damage_flash.color   = Color(1.0, 0.0, 0.0, 0.0)
+	_damage_flash.z_index = 100
+	_damage_flash.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	add_child(_damage_flash)
+
+func _show_damage_flash() -> void:
+	if _damage_flash == null: return
+	var tw := create_tween()
+	tw.tween_property(_damage_flash, "color:a", 0.35, 0.05)
+	tw.tween_property(_damage_flash, "color:a", 0.0, 0.3)
+
+# ── BARRA DE PROGRESO ────────────────────────
+func setup_level_progress(length: float) -> void:
+	_level_length = length
+	if _progress_bar != null: return
+	_progress_bar = ColorRect.new()
+	_progress_bar.set_anchors_preset(Control.PRESET_TOP_WIDE)
+	_progress_bar.offset_top    = 24.0
+	_progress_bar.offset_bottom = 27.0
+	_progress_bar.offset_left   = 8.0
+	_progress_bar.offset_right  = -8.0
+	_progress_bar.color = Color(0.2, 0.2, 0.2, 0.6)
+	add_child(_progress_bar)
+	_progress_fill = ColorRect.new()
+	_progress_fill.size     = Vector2(0, 3)
+	_progress_fill.color    = Color(1.0, 1.0, 1.0, 0.85)
+	_progress_bar.add_child(_progress_fill)
+
+func _update_progress(player_x: float) -> void:
+	if _progress_fill == null or _level_length <= 0: return
+	var pct := clamp(player_x / _level_length, 0.0, 1.0)
+	var bar_w := _progress_bar.size.x
+	_progress_fill.size.x = bar_w * pct
+	if   pct > 0.8: _progress_fill.color = Color(0.2, 0.9, 0.3, 0.9)
+	elif pct > 0.5: _progress_fill.color = Color(1.0, 0.85, 0.0, 0.9)
+	else:           _progress_fill.color = Color(1.0, 1.0, 1.0, 0.85)
+
+# ── NOTIFICACIÓN DE ITEM ─────────────────────
+func _build_item_notif() -> void:
+	_item_notif_label = Label.new()
+	_item_notif_label.set_anchors_preset(Control.PRESET_TOP_RIGHT)
+	_item_notif_label.offset_right  = -8.0
+	_item_notif_label.offset_top    = 34.0
+	_item_notif_label.offset_left   = -150.0
+	_item_notif_label.offset_bottom = 52.0
+	_item_notif_label.horizontal_alignment = HORIZONTAL_ALIGNMENT_RIGHT
+	_item_notif_label.add_theme_font_size_override("font_size", 10)
+	_item_notif_label.modulate.a = 0.0
+	add_child(_item_notif_label)
+
+func show_item_pickup(item_type: String) -> void:
+	if _item_notif_label == null: _build_item_notif()
+	match item_type:
+		"health":
+			_item_notif_label.text = "+ Salud"
+			_item_notif_label.add_theme_color_override("font_color", Color(1.0, 0.3, 0.4))
+		"speed_boost":
+			_item_notif_label.text = "¡Velocidad!"
+			_item_notif_label.add_theme_color_override("font_color", Color(1.0, 0.85, 0.0))
+		"shield":
+			_item_notif_label.text = "+ Escudo"
+			_item_notif_label.add_theme_color_override("font_color", Color(0.3, 0.85, 1.0))
+	var tw := create_tween()
+	tw.tween_property(_item_notif_label, "modulate:a", 1.0, 0.15)
+	tw.tween_interval(1.0)
+	tw.tween_property(_item_notif_label, "modulate:a", 0.0, 0.3)
+
 func _process(_delta: float) -> void:
 	var boss = get_meta("_boss_ref") if has_meta("_boss_ref") else null
 	if boss and is_instance_valid(boss) and "health" in boss:
@@ -169,3 +257,8 @@ func _process(_delta: float) -> void:
 			if t and "elapsed" in t:
 				set_timer(t.elapsed)
 				break
+	# Actualizar barra de progreso
+	if _progress_fill != null:
+		for node in get_tree().get_nodes_in_group("player"):
+			_update_progress(node.global_position.x)
+			break

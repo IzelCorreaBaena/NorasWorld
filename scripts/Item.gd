@@ -91,6 +91,7 @@ func _apply_effect(body: Node2D) -> void:
 	match item_type:
 		"health":
 			GameManager.heal(1)
+			item_collected.emit("health")
 		"speed_boost":
 			item_collected.emit("speed_boost")
 		"shield":
