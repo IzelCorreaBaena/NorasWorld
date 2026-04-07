@@ -86,6 +86,27 @@ const PIN_TEXTS := {
 	"pin_W4_L4_03": "La distancia que recorriste es tu obra",
 	"pin_W4_L4_04": "Ya no eres quien empezó. Eso es crecer",
 	"pin_W4_L4_05": "El final es solo el comienzo de lo siguiente",
+	# Mundo 5 – El Umbral Secreto (magenta)
+	"pin_W5_L1_01": "Llegaste hasta aquí. Nadie más lo hizo",
+	"pin_W5_L1_02": "Este lugar existe porque tú lo buscaste",
+	"pin_W5_L1_03": "El secreto no era el lugar. Eras tú",
+	"pin_W5_L1_04": "Cada duda que venciste te trajo aquí",
+	"pin_W5_L1_05": "El umbral siempre estuvo abierto para ti",
+	"pin_W5_L2_01": "El vacío no está vacío. Está lleno de posibilidad",
+	"pin_W5_L2_02": "Cuando todo desaparece, ves lo que queda",
+	"pin_W5_L2_03": "Lo que imaginas aquí se vuelve real allá",
+	"pin_W5_L2_04": "No temas al silencio. Él también te escucha",
+	"pin_W5_L2_05": "El camino que ves es el que crearás",
+	"pin_W5_L3_01": "Los recuerdos no pesan. Te sostienen",
+	"pin_W5_L3_02": "Cada versión de ti que olvidaste aún existe aquí",
+	"pin_W5_L3_03": "Recuerda quien eras para saber quién eres",
+	"pin_W5_L3_04": "Nada de lo que viviste fue en vano",
+	"pin_W5_L3_05": "El pasado no te persigue. Te acompaña",
+	"pin_W5_L4_01": "El núcleo de todo siempre fuiste tú",
+	"pin_W5_L4_02": "Este es el lugar donde todo comienza de nuevo",
+	"pin_W5_L4_03": "La versión más real de ti espera al final",
+	"pin_W5_L4_04": "No llegaste hasta aquí para rendirte ahora",
+	"pin_W5_L4_05": "Nora. Lo lograste. Todo lo lograste",
 }
 
 const PIN_COLORS := {
@@ -93,6 +114,7 @@ const PIN_COLORS := {
 	"world2": Color(1.00, 0.30, 0.60),  # rosa
 	"world3": Color(0.30, 0.70, 1.00),  # azul
 	"world4": Color(0.65, 0.30, 0.90),  # morado
+	"world5": Color(0.90, 0.10, 0.90),  # magenta
 }
 
 const DISPLAY_TIME := 3.0

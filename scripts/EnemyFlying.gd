@@ -19,6 +19,8 @@ var _dist_moved := 0.0
 func _ready() -> void:
 	_start_pos = global_position
 	add_to_group("enemy")
+	collision_layer = 4
+	collision_mask  = 1
 	body_entered.connect(_on_body_entered)
 	_build_sprite()
 
@@ -37,7 +39,7 @@ func _process(delta: float) -> void:
 func _build_sprite() -> void:
 	var sprite := Sprite2D.new()
 	var img    := Image.create(20, 14, false, Image.FORMAT_RGBA8)
-	img.fill(Color(0.6, 0.2, 0.7, 1.0))
+	img.fill(Color(0.133, 0.667, 0.8, 1.0))  # cian #22AACC
 	sprite.texture = ImageTexture.create_from_image(img)
 	add_child(sprite)
 

@@ -43,7 +43,7 @@ func _physics_process(delta: float) -> void:
 func _build_sprite() -> void:
 	var sprite := Sprite2D.new()
 	var img    := Image.create(22, 28, false, Image.FORMAT_RGBA8)
-	img.fill(Color(0.85, 0.35, 0.1, 1.0))
+	img.fill(Color(0.8, 0.133, 0.4, 1.0))  # magenta #CC2266
 	sprite.texture = ImageTexture.create_from_image(img)
 	add_child(sprite)
 
@@ -56,6 +56,8 @@ func _build_sprite() -> void:
 
 	# Area2D para detectar contacto con el jugador
 	var area  := Area2D.new()
+	area.collision_layer = 4
+	area.collision_mask  = 1
 	var acol  := CollisionShape2D.new()
 	var acirc := CircleShape2D.new()
 	acirc.radius = 16.0

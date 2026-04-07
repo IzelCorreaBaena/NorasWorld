@@ -9,6 +9,9 @@ const DIALOG_SCENE   := preload("res://scenes/DialogSystem.tscn")
 const YELI_SCENE     := preload("res://scenes/Yeli.tscn")
 const PLAYER_SCENE   := preload("res://scenes/Player.tscn")
 const HUD_SCENE      := preload("res://scenes/HUD.tscn")
+const HAZARD_SCENE   := preload("res://scenes/Hazard.tscn")
+const ITEM_SCENE     := preload("res://scenes/Item.tscn")
+const NPC_SCENE      := preload("res://scenes/NPCAlly.tscn")
 
 @export var data : LevelData
 
@@ -51,6 +54,9 @@ func _ready() -> void:
 	_spawn_zones()
 	_spawn_platforms()
 	_spawn_crouch_barriers()
+	_spawn_hazards()
+	_spawn_items()
+	_spawn_npcs()
 	_spawn_level_end()
 	_spawn_dialog()
 	_spawn_yeli()
@@ -91,9 +97,8 @@ func _process(_delta: float) -> void:
 				_checkpoint_pos = Vector2(x, _player.global_position.y)
 				GameManager.set_checkpoint(GameManager.current_level, _checkpoint_pos)
 				if _yeli: _yeli.show_secret_nearby()
-	# Detectar fin de nivel
-	var end_node := get_node_or_null("LevelEnd")
-	if end_node and _player.global_position.distance_to(end_node.global_position) < 80:
+	# Detectar fin de nivel (respaldo por posición si el Area2D falla)
+	if not _level_finished and _player.global_position.x > data.level_end_x - 30:
 		_finish()
 
 # ── CONSTRUCCIÓN ─────────────────────────────
@@ -260,10 +265,46 @@ func _spawn_crouch_barriers() -> void:
 			vis.add_child(stripe)
 		add_child(barrier)
 
+func _spawn_hazards() -> void:
+	for rect in data.hazard_rects:
+		var h := HAZARD_SCENE.instantiate()
+		h.hazard_size = rect.size
+		h.position = rect.position + rect.size * 0.5
+		add_child(h)
+
+func _spawn_items() -> void:
+	for i in data.item_positions.size():
+		var item := ITEM_SCENE.instantiate()
+		item.position = data.item_positions[i]
+		if i < data.item_types.size() and data.item_types[i] != "":
+			item.item_type = data.item_types[i]
+		add_child(item)
+
+func _spawn_npcs() -> void:
+	for i in data.npc_positions.size():
+		var npc := NPC_SCENE.instantiate()
+		npc.position = data.npc_positions[i]
+		if i < data.npc_names.size() and data.npc_names[i] != "":
+			npc.npc_name = data.npc_names[i]
+		if i < data.npc_dialogs.size() and data.npc_dialogs[i] != "":
+			npc.dialog_text = data.npc_dialogs[i]
+		if i < data.npc_colors.size():
+			npc.npc_color = data.npc_colors[i]
+		add_child(npc)
+
 func _spawn_level_end() -> void:
-	var end  := Marker2D.new()
+	var end  := Area2D.new()
 	end.name = "LevelEnd"
 	end.position = Vector2(data.level_end_x, 220)
+	var col   := CollisionShape2D.new()
+	var shape := RectangleShape2D.new()
+	shape.size = Vector2(60, 80)
+	col.shape  = shape
+	end.add_child(col)
+	end.body_entered.connect(func(body):
+		if body.is_in_group("player"):
+			_finish()
+	)
 	add_child(end)
 
 func _spawn_dialog() -> void:
@@ -277,6 +318,7 @@ func _spawn_timer() -> void:
 	if data.level_key == "":
 		return
 	_timer_node = LevelTimer.new()
+	_timer_node.name = "LevelTimer"
 	add_child(_timer_node)
 	_timer_node.start(data.level_key, data.time_par)
 	_timer_node.medal_earned.connect(func(tier):

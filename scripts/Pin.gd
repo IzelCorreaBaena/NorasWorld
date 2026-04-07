@@ -4,8 +4,7 @@ extends Area2D
 @export var pin_color: Color  = Color(1.0, 0.8, 0.1, 1.0)  # dorado por defecto
 
 var collected := false
-@onready var sprite       = $Sprite2D
-@onready var particles    = $GPUParticles2D
+@onready var sprite = $Sprite2D
 
 func _ready() -> void:
 	add_to_group("collectible")
