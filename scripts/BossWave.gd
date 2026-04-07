@@ -116,4 +116,4 @@ func _player_wins() -> void:
 	_defeat()
 
 func _on_defeated() -> void:
-	GameManager.collect_pin("pin_world1_05")
+	GameManager.collect_pin("pin_W1_Boss_01")

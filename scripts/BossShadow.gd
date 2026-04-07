@@ -116,7 +116,7 @@ func _start_erratic_behavior() -> void:
 	)
 
 func _on_defeated() -> void:
-	GameManager.collect_pin("pin_world3_05")
+	GameManager.collect_pin("pin_W3_Boss_01")
 	# Efecto de desvanecimiento en luz
 	var tw := create_tween()
 	tw.tween_property(sprite_node, "modulate",

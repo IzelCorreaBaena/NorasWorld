@@ -64,7 +64,7 @@ func _ready() -> void:
 func _process(_delta: float) -> void:
 	if player.global_position.distance_to(level_end.global_position) < 80:
 		_finish_level()
-	if player.global_position.y > 900:
+	if player.global_position.y > 420:
 		player.die()
 	_check_checkpoints()
 

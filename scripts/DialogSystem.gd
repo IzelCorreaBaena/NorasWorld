@@ -2,30 +2,90 @@ extends CanvasLayer
 
 # ── TEXTOS DE PINES ──────────────────────────
 const PIN_TEXTS := {
-	# Mundo 1 – Ola Grande (dorado)
-	"pin_world1_01": "El primer paso siempre da miedo",
-	"pin_world1_02": "Respira. Ya lo tienes",
-	"pin_world1_03": "La vista desde arriba lo cambia todo",
-	"pin_world1_04": "Confía en el momento",
-	"pin_world1_05": "Domaste tu primera ola. Hay más",
+	# Mundo 1 – La Orilla (dorado)
+	"pin_W1_L1_01": "El primer paso siempre da miedo",
+	"pin_W1_L1_02": "Respira. Ya lo tienes",
+	"pin_W1_L1_03": "La vista desde arriba lo cambia todo",
+	"pin_W1_L1_04": "Confía en el momento",
+	"pin_W1_L1_05": "Domaste tu primera ola. Hay más",
+	"pin_W1_L2_01": "El camino siempre aparece cuando caminas",
+	"pin_W1_L2_02": "No mires atrás, el horizonte está adelante",
+	"pin_W1_L2_03": "Cada salto es un acto de fe",
+	"pin_W1_L2_04": "La orilla siempre llega",
+	"pin_W1_L2_05": "Ya sabes nadar. Ahora vuela",
+	"pin_W1_L3_01": "El ritmo del mar te enseña todo",
+	"pin_W1_L3_02": "La calma después de la tormenta es tuya",
+	"pin_W1_L3_03": "Cada ola que pasas te hace más fuerte",
+	"pin_W1_L3_04": "El océano también te escucha",
+	"pin_W1_L3_05": "La playa recuerda cada paso que das",
+	"pin_W1_L4_01": "La aventura empieza donde termina el mapa",
+	"pin_W1_L4_02": "El miedo es solo el principio",
+	"pin_W1_L4_03": "Eres más valiente de lo que crees",
+	"pin_W1_L4_04": "El horizonte te llama por tu nombre",
+	"pin_W1_L4_05": "Nora, ya eres imparable",
 	# Mundo 2 – Pasarela Infinita (rosa)
-	"pin_world2_01": "El estilo es una forma de decir quién eres sin hablar",
-	"pin_world2_02": "Lo que ves depende de cómo miras",
-	"pin_world2_03": "El escenario es tuyo. Siempre lo fue",
-	"pin_world2_04": "A veces hay que romper algo para llegar",
-	"pin_world2_05": "Nadie puede imitarte de verdad. Eso es tuyo",
+	"pin_W2_L1_01": "El estilo es una forma de decir quién eres sin hablar",
+	"pin_W2_L1_02": "Lo que ves depende de cómo miras",
+	"pin_W2_L1_03": "El escenario es tuyo. Siempre lo fue",
+	"pin_W2_L1_04": "A veces hay que romper algo para llegar",
+	"pin_W2_L1_05": "Nadie puede imitarte de verdad. Eso es tuyo",
+	"pin_W2_L2_01": "La pasarela empieza en tu cabeza",
+	"pin_W2_L2_02": "Camina como si el mundo te mirara. Lo hace",
+	"pin_W2_L2_03": "Cada look es una declaración",
+	"pin_W2_L2_04": "La moda pasa. El estilo queda",
+	"pin_W2_L2_05": "Eres la tendencia que no existía",
+	"pin_W2_L3_01": "La ciudad es tu runway",
+	"pin_W2_L3_02": "Cada esquina tiene su propia magia",
+	"pin_W2_L3_03": "El ritmo urbano late en ti",
+	"pin_W2_L3_04": "La noche tiene sus propias luces",
+	"pin_W2_L3_05": "Tú defines el código de vestimenta",
+	"pin_W2_L4_01": "El desfile más importante es el de tu vida",
+	"pin_W2_L4_02": "Crea. Destruye. Vuelve a crear",
+	"pin_W2_L4_03": "El arte y la moda son el mismo idioma",
+	"pin_W2_L4_04": "Tu intuición siempre tiene razón",
+	"pin_W2_L4_05": "La colección más importante eres tú",
 	# Mundo 3 – La Tribu (azul)
-	"pin_world3_01": "Tus amigos son tu mejor outfit",
-	"pin_world3_02": "Siente el ritmo. Ya lo llevas dentro",
-	"pin_world3_03": "Los mejores momentos no se planean",
-	"pin_world3_04": "Incluso en la oscuridad sabes quién eres",
-	"pin_world3_05": "Tu sombra no te define. Tú la defines a ella",
+	"pin_W3_L1_01": "Tus amigos son tu mejor outfit",
+	"pin_W3_L1_02": "Siente el ritmo. Ya lo llevas dentro",
+	"pin_W3_L1_03": "Los mejores momentos no se planean",
+	"pin_W3_L1_04": "Incluso en la oscuridad sabes quién eres",
+	"pin_W3_L1_05": "Tu sombra no te define. Tú la defines a ella",
+	"pin_W3_L2_01": "La tribu te espera siempre",
+	"pin_W3_L2_02": "Juntos somos más que la suma",
+	"pin_W3_L2_03": "El fuego del grupo te calienta",
+	"pin_W3_L2_04": "La lealtad es el tejido más fino",
+	"pin_W3_L2_05": "Eres el eslabón que completaba la cadena",
+	"pin_W3_L3_01": "La música une lo que las palabras no alcanzan",
+	"pin_W3_L3_02": "Baila aunque nadie te vea. Siempre te ves tú",
+	"pin_W3_L3_03": "El ritmo tribal es el más antiguo que existe",
+	"pin_W3_L3_04": "Tu cuerpo sabe el camino",
+	"pin_W3_L3_05": "La celebración es parte del viaje",
+	"pin_W3_L4_01": "Las raíces te dan alas",
+	"pin_W3_L4_02": "La tradición reinventada eres tú",
+	"pin_W3_L4_03": "Lo que llevas dentro nadie te lo puede quitar",
+	"pin_W3_L4_04": "El legado también se puede elegir",
+	"pin_W3_L4_05": "Llevas la tribu contigo a todas partes",
 	# Mundo 4 – El Estudio (morado)
-	"pin_world4_01": "El primer boceto nunca es el último",
-	"pin_world4_02": "Todo lo que imaginas ya existe dentro de ti",
-	"pin_world4_03": "El reflejo que importa eres tú eligiéndolo",
-	"pin_world4_04": "Crear algo es el acto más valiente que existe",
-	"pin_world4_05": "Ya eres la estilista que querías ser. Siempre lo fuiste",
+	"pin_W4_L1_01": "El primer boceto nunca es el último",
+	"pin_W4_L1_02": "Todo lo que imaginas ya existe dentro de ti",
+	"pin_W4_L1_03": "El reflejo que importa eres tú eligiéndolo",
+	"pin_W4_L1_04": "Crear algo es el acto más valiente que existe",
+	"pin_W4_L1_05": "Ya eres la estilista que querías ser. Siempre lo fuiste",
+	"pin_W4_L2_01": "El estudio es donde los sueños toman forma",
+	"pin_W4_L2_02": "La aguja y el hilo cosen futuros",
+	"pin_W4_L2_03": "Cada puntada es una decisión",
+	"pin_W4_L2_04": "La perfección es el enemigo de lo hecho",
+	"pin_W4_L2_05": "Tu obra maestra ya está en camino",
+	"pin_W4_L3_01": "El espejo te muestra lo que eliges ver",
+	"pin_W4_L3_02": "Diseña para ti primero",
+	"pin_W4_L3_03": "La creatividad no se agota. Se renueva",
+	"pin_W4_L3_04": "El caos es el primer paso del orden",
+	"pin_W4_L3_05": "Todo gran diseño empieza con una pregunta",
+	"pin_W4_L4_01": "El último nivel siempre parece imposible",
+	"pin_W4_L4_02": "Y aun así aquí estás",
+	"pin_W4_L4_03": "La distancia que recorriste es tu obra",
+	"pin_W4_L4_04": "Ya no eres quien empezó. Eso es crecer",
+	"pin_W4_L4_05": "El final es solo el comienzo de lo siguiente",
 }
 
 const PIN_COLORS := {
@@ -141,10 +201,10 @@ func _hide_popup() -> void:
 
 # ── HELPERS ──────────────────────────────────
 func _world_key(pin_id: String) -> String:
-	if   "world1" in pin_id: return "world1"
-	elif "world2" in pin_id: return "world2"
-	elif "world3" in pin_id: return "world3"
-	elif "world4" in pin_id: return "world4"
+	if   "W1_" in pin_id or "world1" in pin_id: return "world1"
+	elif "W2_" in pin_id or "world2" in pin_id: return "world2"
+	elif "W3_" in pin_id or "world3" in pin_id: return "world3"
+	elif "W4_" in pin_id or "world4" in pin_id: return "world4"
 	return ""
 
 # ── API PÚBLICA ──────────────────────────────

@@ -6,6 +6,7 @@ var _vbox: VBoxContainer
 
 func _ready() -> void:
 	layer = 50
+	process_mode = Node.PROCESS_MODE_ALWAYS
 	add_to_group("pause_menu")
 	_build_ui()
 	hide_menu()

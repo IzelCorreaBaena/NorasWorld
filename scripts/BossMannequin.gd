@@ -86,7 +86,7 @@ func _on_hit() -> void:
 	hits_taken += 1
 
 func _on_defeated() -> void:
-	GameManager.collect_pin("pin_world2_05")
+	GameManager.collect_pin("pin_W2_Boss_01")
 	# El maniquí se fragmenta en pines de colores (visual)
 	for i in 8:
 		var frag := ColorRect.new()

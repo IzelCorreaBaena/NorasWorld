@@ -21,7 +21,7 @@ config/features=PackedStringArray("4.6")
 [autoload]
 
 GameManager="*res://scripts/GameManager.gd"
-OutfitManager="*uid://bbslifl2s8l6x"
+OutfitManager="*res://scripts/OutfitManager.gd"
 SceneTransition="*res://scripts/SceneTransition.gd"
 NGPlusManager="*res://scripts/NGPlusManager.gd"
 

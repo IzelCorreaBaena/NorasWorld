@@ -14,9 +14,9 @@ const HUD_SCENE      := preload("res://scenes/HUD.tscn")
 
 # ── COLORES POR TEMA ──────────────────────────
 const THEME_COLORS := {
-	"beach"  : {"bg": Color(0.53, 0.81, 0.92), "floor": Color(0.25, 0.58, 0.32), "plat": Color(0.22, 0.52, 0.28)},
-	"city"   : {"bg": Color(0.07, 0.07, 0.07), "floor": Color(0.12, 0.12, 0.12), "plat": Color(0.20, 0.20, 0.22)},
-	"tribe"  : {"bg": Color(0.22, 0.08, 0.35), "floor": Color(0.28, 0.10, 0.18), "plat": Color(0.38, 0.14, 0.22)},
+	"beach"  : {"bg": Color(0.38, 0.72, 0.92), "floor": Color(0.82, 0.72, 0.50), "plat": Color(0.70, 0.58, 0.36)},
+	"city"   : {"bg": Color(0.07, 0.07, 0.12), "floor": Color(0.18, 0.18, 0.20), "plat": Color(0.26, 0.26, 0.30)},
+	"tribe"  : {"bg": Color(0.22, 0.08, 0.35), "floor": Color(0.35, 0.14, 0.22), "plat": Color(0.48, 0.20, 0.30)},
 	"studio" : {"bg": Color(0.06, 0.04, 0.12), "floor": Color(0.20, 0.10, 0.35), "plat": Color(0.35, 0.15, 0.55)},
 	"secret" : {"bg": Color(0.02, 0.02, 0.08), "floor": Color(0.10, 0.05, 0.20), "plat": Color(0.20, 0.10, 0.40)},
 }
@@ -81,7 +81,7 @@ func _process(_delta: float) -> void:
 	if _player == null or _level_finished:
 		return
 	# Muerte por caída
-	if _player.global_position.y > 900:
+	if _player.global_position.y > 420:
 		_player.die()
 	# Checkpoints
 	if not data.checkpoint_xs.is_empty():

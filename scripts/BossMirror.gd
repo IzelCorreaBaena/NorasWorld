@@ -199,7 +199,7 @@ func _wrong_order_fx() -> void:
 	tw.tween_property(self, "modulate", Color.WHITE,           0.2)
 
 func _on_defeated() -> void:
-	GameManager.collect_pin("pin_world4_05")
+	GameManager.collect_pin("pin_W4_Boss_01")
 	# Escena final: todos los fragmentos explotan en destellos
 	for i in FRAGMENT_ORDER_COLORS.size():
 		var sp := ColorRect.new()
