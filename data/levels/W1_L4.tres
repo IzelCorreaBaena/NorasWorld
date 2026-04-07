@@ -1,0 +1,26 @@
+[gd_resource type="Resource" script_class="LevelData" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://scripts/LevelData.gd" id="1"]
+
+[resource]
+script = ExtResource("1")
+level_key = "W1_L4"
+world_id = 1
+level_num = 4
+level_name = "La Tormenta"
+next_scene = "res://scenes/levels/W1_Boss.tscn"
+time_par = 150.0
+bg_theme = "beach"
+pin_ids = PackedStringArray("pin_W1_L4_01", "pin_W1_L4_02", "pin_W1_L4_03", "pin_W1_L4_04", "pin_W1_L4_05")
+pin_positions = Array[Vector2]([Vector2(300, 210), Vector2(650, 178), Vector2(1100, 205), Vector2(1600, 172), Vector2(2200, 200)])
+pin_colors = Array[Color]([Color(1, 0.8, 0, 1), Color(1, 0.4, 0.2, 1), Color(0.4, 0.8, 1, 1), Color(0.8, 0.4, 1, 1), Color(0.2, 0.9, 0.4, 1)])
+enemy_types = PackedStringArray("patrol", "patrol", "patrol", "jumper")
+enemy_positions = Array[Vector2]([Vector2(480, 255), Vector2(900, 215), Vector2(1450, 255), Vector2(1900, 215)])
+enemy_speeds = Array[float]([65.0, 70.0, 72.0, 68.0])
+water_rects = Array[Rect2]([Rect2(350, 255, 180, 40), Rect2(800, 255, 250, 40), Rect2(1400, 255, 200, 40)])
+light_rects = Array[Rect2]([])
+requires_outfit = ""
+checkpoint_xs = Array[float]([650.0, 1300.0, 1950.0])
+level_end_x = 2500.0
+level_length = 2700.0
+platform_rects = Array[Rect2]([Rect2(200, 228, 70, 14), Rect2(360, 208, 75, 14), Rect2(520, 185, 65, 14), Rect2(680, 200, 75, 14), Rect2(840, 218, 70, 14), Rect2(1000, 178, 65, 14), Rect2(1160, 198, 75, 14), Rect2(1340, 185, 65, 14), Rect2(1510, 210, 70, 14), Rect2(1690, 175, 65, 14), Rect2(1860, 192, 75, 14), Rect2(2040, 178, 65, 14), Rect2(2210, 200, 80, 14)])

@@ -1,0 +1,17 @@
+[gd_scene format=3 uid="uid://yeli"]
+
+[ext_resource type="Script" path="res://scripts/Yeli.gd" id="1_yeli"]
+
+[node name="Yeli" type="Node2D"]
+script = ExtResource("1_yeli")
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+
+[node name="EmojiLabel" type="Label" parent="."]
+position = Vector2(-10, -32)
+text = ""
+modulate = Color(1, 1, 1, 0)
+
+[node name="Sparkles" type="CPUParticles2D" parent="."]
+emitting = false
+amount = 16

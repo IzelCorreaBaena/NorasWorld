@@ -1,0 +1,15 @@
+[gd_scene load_steps=3 format=3]
+
+[ext_resource type="Script" path="res://scripts/ProceduralLevel.gd" id="1"]
+[ext_resource type="Resource" path="res://data/levels/W3_L1.tres" id="2"]
+
+[node name="W3_L1" type="Node2D"]
+script = ExtResource("1")
+data = ExtResource("2")
+
+[node name="Floor" type="StaticBody2D" parent="."]
+
+[node name="FloorShape" type="CollisionShape2D" parent="Floor"]
+shape = WorldBoundaryShape2D.new()
+
+[node name="Platforms" type="Node2D" parent="."]

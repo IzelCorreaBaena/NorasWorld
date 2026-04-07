@@ -1,0 +1,26 @@
+[gd_resource type="Resource" script_class="LevelData" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://scripts/LevelData.gd" id="1"]
+
+[resource]
+script = ExtResource("1")
+level_key = "W3_L2"
+world_id = 3
+level_num = 2
+level_name = "Bosque Tribal"
+next_scene = "res://scenes/levels/W3_L3.tscn"
+time_par = 130.0
+bg_theme = "tribe"
+pin_ids = PackedStringArray("pin_W3_L2_01", "pin_W3_L2_02", "pin_W3_L2_03", "pin_W3_L2_04", "pin_W3_L2_05")
+pin_positions = Array[Vector2]([Vector2(310, 200), Vector2(650, 155), Vector2(1020, 195), Vector2(1450, 148), Vector2(2050, 185)])
+pin_colors = Array[Color]([Color(1, 0.8, 0, 1), Color(1, 0.4, 0.2, 1), Color(0.4, 0.8, 1, 1), Color(0.8, 0.4, 1, 1), Color(0.2, 0.9, 0.4, 1)])
+enemy_types = PackedStringArray("patrol", "patrol", "jumper")
+enemy_positions = Array[Vector2]([Vector2(480, 215), Vector2(1100, 195), Vector2(1700, 175)])
+enemy_speeds = Array[float]([62.0, 65.0, 60.0])
+water_rects = Array[Rect2]([])
+light_rects = Array[Rect2]([Rect2(900, 155, 150, 100)])
+requires_outfit = ""
+checkpoint_xs = Array[float]([800.0, 1600.0])
+level_end_x = 2400.0
+level_length = 2600.0
+platform_rects = Array[Rect2]([Rect2(200, 225, 90, 14), Rect2(380, 205, 80, 14), Rect2(550, 180, 85, 14), Rect2(730, 160, 80, 14), Rect2(910, 180, 90, 14), Rect2(1100, 200, 80, 14), Rect2(1280, 175, 85, 14), Rect2(1470, 155, 80, 14), Rect2(1660, 175, 90, 14), Rect2(1860, 195, 80, 14), Rect2(2060, 175, 85, 14), Rect2(2250, 192, 90, 14)])

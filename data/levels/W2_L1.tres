@@ -1,0 +1,26 @@
+[gd_resource type="Resource" script_class="LevelData" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://scripts/LevelData.gd" id="1"]
+
+[resource]
+script = ExtResource("1")
+level_key = "W2_L1"
+world_id = 2
+level_num = 1
+level_name = "El Backstage"
+next_scene = "res://scenes/levels/W2_L2.tscn"
+time_par = 100.0
+bg_theme = "city"
+pin_ids = PackedStringArray("pin_W2_L1_01", "pin_W2_L1_02", "pin_W2_L1_03", "pin_W2_L1_04", "pin_W2_L1_05")
+pin_positions = Array[Vector2]([Vector2(260, 210), Vector2(530, 182), Vector2(800, 205), Vector2(1130, 165), Vector2(1550, 195)])
+pin_colors = Array[Color]([Color(1, 0.8, 0, 1), Color(1, 0.4, 0.2, 1), Color(0.4, 0.8, 1, 1), Color(0.8, 0.4, 1, 1), Color(0.2, 0.9, 0.4, 1)])
+enemy_types = PackedStringArray("patrol", "patrol")
+enemy_positions = Array[Vector2]([Vector2(400, 215), Vector2(950, 195)])
+enemy_speeds = Array[float]([58.0, 62.0])
+water_rects = Array[Rect2]([])
+light_rects = Array[Rect2]([])
+requires_outfit = ""
+checkpoint_xs = Array[float]([720.0])
+level_end_x = 1800.0
+level_length = 2000.0
+platform_rects = Array[Rect2]([Rect2(190, 232, 100, 14), Rect2(360, 215, 90, 14), Rect2(530, 198, 95, 14), Rect2(700, 215, 100, 14), Rect2(870, 198, 90, 14), Rect2(1040, 180, 95, 14), Rect2(1210, 198, 90, 14), Rect2(1380, 215, 100, 14), Rect2(1550, 198, 90, 14)])

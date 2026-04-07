@@ -1,0 +1,84 @@
+[gd_scene load_steps=8 format=3]
+
+[ext_resource type="Script" path="res://scripts/Level.gd" id="1"]
+[ext_resource type="Script" path="res://scripts/BossShadow.gd" id="2"]
+[ext_resource type="PackedScene" uid="uid://player" path="res://scenes/Player.tscn" id="3"]
+[ext_resource type="PackedScene" uid="uid://hud" path="res://scenes/HUD.tscn" id="4"]
+
+[sub_resource type="RectangleShape2D" id="FloorShape_1"]
+size = Vector2(2200, 24)
+
+[sub_resource type="RectangleShape2D" id="light_shape_1"]
+size = Vector2(80, 60)
+
+[sub_resource type="RectangleShape2D" id="light_shape_2"]
+size = Vector2(90, 70)
+
+[sub_resource type="RectangleShape2D" id="light_shape_3"]
+size = Vector2(70, 55)
+
+[node name="W3_Boss" type="Node2D"]
+script = ExtResource("1")
+next_level = "res://scenes/WorldMap.tscn"
+level_id = 3
+level_key = "W3_Boss"
+world_name = "La Sombra"
+
+[node name="Player" parent="." instance=ExtResource("3")]
+position = Vector2(80, 258)
+
+[node name="BossShadow" type="Node2D" parent="."]
+script = ExtResource("2")
+
+[node name="HUD" parent="." instance=ExtResource("4")]
+
+[node name="LevelEnd" type="Marker2D" parent="."]
+position = Vector2(600, 220)
+
+[node name="Floor" type="StaticBody2D" parent="."]
+position = Vector2(1100, 279)
+
+[node name="FloorShape" type="CollisionShape2D" parent="Floor"]
+shape = SubResource("FloorShape_1")
+
+[node name="LightZone1" type="Area2D" parent="." groups=["light_zone"]]
+position = Vector2(150, 200)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="LightZone1"]
+shape = SubResource("light_shape_1")
+
+[node name="Vis" type="ColorRect" parent="LightZone1"]
+offset_left = -40.0
+offset_top = -30.0
+offset_right = 40.0
+offset_bottom = 30.0
+color = Color(1, 0.95, 0.5, 0.25)
+z_index = -5
+
+[node name="LightZone2" type="Area2D" parent="." groups=["light_zone"]]
+position = Vector2(320, 180)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="LightZone2"]
+shape = SubResource("light_shape_2")
+
+[node name="Vis" type="ColorRect" parent="LightZone2"]
+offset_left = -45.0
+offset_top = -35.0
+offset_right = 45.0
+offset_bottom = 35.0
+color = Color(1, 0.95, 0.5, 0.25)
+z_index = -5
+
+[node name="LightZone3" type="Area2D" parent="." groups=["light_zone"]]
+position = Vector2(450, 215)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="LightZone3"]
+shape = SubResource("light_shape_3")
+
+[node name="Vis" type="ColorRect" parent="LightZone3"]
+offset_left = -35.0
+offset_top = -27.5
+offset_right = 35.0
+offset_bottom = 27.5
+color = Color(1, 0.95, 0.5, 0.25)
+z_index = -5

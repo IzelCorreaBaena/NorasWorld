@@ -1,0 +1,26 @@
+[gd_resource type="Resource" script_class="LevelData" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://scripts/LevelData.gd" id="1"]
+
+[resource]
+script = ExtResource("1")
+level_key = "W4_L1"
+world_id = 4
+level_num = 1
+level_name = "El Taller"
+next_scene = "res://scenes/levels/W4_L2.tscn"
+time_par = 115.0
+bg_theme = "studio"
+pin_ids = PackedStringArray("pin_W4_L1_01", "pin_W4_L1_02", "pin_W4_L1_03", "pin_W4_L1_04", "pin_W4_L1_05")
+pin_positions = Array[Vector2]([Vector2(300, 195), Vector2(670, 162), Vector2(1050, 190), Vector2(1470, 155), Vector2(1750, 185)])
+pin_colors = Array[Color]([Color(1, 0.8, 0, 1), Color(1, 0.4, 0.2, 1), Color(0.4, 0.8, 1, 1), Color(0.8, 0.4, 1, 1), Color(0.2, 0.9, 0.4, 1)])
+enemy_types = PackedStringArray("patrol", "patrol", "flying")
+enemy_positions = Array[Vector2]([Vector2(480, 215), Vector2(1100, 200), Vector2(1600, 155)])
+enemy_speeds = Array[float]([65.0, 68.0, 70.0])
+water_rects = Array[Rect2]([])
+light_rects = Array[Rect2]([])
+requires_outfit = ""
+checkpoint_xs = Array[float]([750.0])
+level_end_x = 2000.0
+level_length = 2200.0
+platform_rects = Array[Rect2]([Rect2(200, 228, 110, 14), Rect2(390, 208, 90, 14), Rect2(570, 185, 95, 14), Rect2(760, 205, 90, 14), Rect2(940, 220, 100, 14), Rect2(1130, 198, 90, 14), Rect2(1320, 178, 95, 14), Rect2(1510, 160, 90, 14), Rect2(1700, 178, 100, 14), Rect2(1880, 195, 90, 14)])

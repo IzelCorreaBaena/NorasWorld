@@ -1,0 +1,324 @@
+[gd_scene load_steps=10 format=3 uid="uid://world3"]
+
+[ext_resource type="Script"      path="res://scripts/Level.gd"       id="1_lvl"]
+[ext_resource type="PackedScene" path="res://scenes/Player.tscn"     id="2_player"]
+[ext_resource type="PackedScene" path="res://scenes/HUD.tscn"        id="3_hud"]
+[ext_resource type="PackedScene" path="res://scenes/Pin.tscn"        id="4_pin"]
+[ext_resource type="PackedScene" path="res://scenes/Enemy.tscn"      id="5_enemy"]
+[ext_resource type="Script"      path="res://scripts/BossShadow.gd"  id="6_boss"]
+
+[sub_resource type="WorldBoundaryShape2D" id="floor_shape"]
+
+[sub_resource type="RectangleShape2D" id="plat_t1"]
+size = Vector2(200, 18)
+
+[sub_resource type="RectangleShape2D" id="plat_t2"]
+size = Vector2(120, 18)
+
+[sub_resource type="RectangleShape2D" id="plat_t3"]
+size = Vector2(160, 18)
+
+[sub_resource type="RectangleShape2D" id="plat_t4"]
+size = Vector2(100, 18)
+
+[sub_resource type="RectangleShape2D" id="plat_t5"]
+size = Vector2(140, 18)
+
+[sub_resource type="RectangleShape2D" id="plat_t6"]
+size = Vector2(80, 18)
+
+[sub_resource type="RectangleShape2D" id="plat_t7"]
+size = Vector2(180, 18)
+
+[sub_resource type="RectangleShape2D" id="plat_t8"]
+size = Vector2(100, 18)
+
+[sub_resource type="RectangleShape2D" id="wall_l"]
+size = Vector2(18, 120)
+
+[sub_resource type="RectangleShape2D" id="wall_r"]
+size = Vector2(18, 120)
+
+[node name="World3" type="Node2D"]
+script = ExtResource("1_lvl")
+next_level = "res://scenes/WorldMap.tscn"
+level_id = 3
+world_name = "La Tribu"
+pins_in_level = 5
+checkpoint_xs = [480.0, 960.0, 1440.0]
+
+[node name="Background" type="ColorRect" parent="."]
+anchors_preset = 15
+offset_left = -500.0
+offset_top = -600.0
+offset_right = 6500.0
+offset_bottom = 1000.0
+color = Color(0.22, 0.08, 0.35, 1.0)
+z_index = -10
+
+[node name="SunsetGrad" type="ColorRect" parent="."]
+offset_left = -500.0
+offset_top = -600.0
+offset_right = 6500.0
+offset_bottom = -100.0
+color = Color(1.0, 0.42, 0.13, 0.35)
+z_index = -9
+
+[node name="Player" parent="." instance=ExtResource("2_player")]
+position = Vector2(60, 220)
+
+[node name="HUD" parent="." instance=ExtResource("3_hud")]
+
+[node name="Floor" type="StaticBody2D" parent="."]
+position = Vector2(0, 290)
+[node name="FloorCol" type="CollisionShape2D" parent="Floor"]
+shape = SubResource("floor_shape")
+[node name="FloorVis" type="ColorRect" parent="Floor"]
+offset_left = -500.0
+offset_top = 0.0
+offset_right = 6500.0
+offset_bottom = 150.0
+color = Color(0.3, 0.12, 0.45, 1.0)
+
+[node name="Plat_T1" type="StaticBody2D" parent="."]
+position = Vector2(180, 250)
+[node name="Col" type="CollisionShape2D" parent="Plat_T1"]
+shape = SubResource("plat_t1")
+[node name="Vis" type="ColorRect" parent="Plat_T1"]
+offset_left = -100.0
+offset_top = -9.0
+offset_right = 100.0
+offset_bottom = 9.0
+color = Color(1.0, 0.42, 0.13)
+
+[node name="Plat_T2" type="StaticBody2D" parent="."]
+position = Vector2(420, 215)
+[node name="Col" type="CollisionShape2D" parent="Plat_T2"]
+shape = SubResource("plat_t2")
+[node name="Vis" type="ColorRect" parent="Plat_T2"]
+offset_left = -60.0
+offset_top = -9.0
+offset_right = 60.0
+offset_bottom = 9.0
+color = Color(0.42, 0.13, 1.0)
+
+[node name="Plat_T3" type="StaticBody2D" parent="."]
+position = Vector2(640, 180)
+[node name="Col" type="CollisionShape2D" parent="Plat_T3"]
+shape = SubResource("plat_t3")
+[node name="Vis" type="ColorRect" parent="Plat_T3"]
+offset_left = -80.0
+offset_top = -9.0
+offset_right = 80.0
+offset_bottom = 9.0
+color = Color(1.0, 0.42, 0.13)
+
+[node name="Plat_T4" type="StaticBody2D" parent="."]
+position = Vector2(840, 148)
+[node name="Col" type="CollisionShape2D" parent="Plat_T4"]
+shape = SubResource("plat_t4")
+[node name="Vis" type="ColorRect" parent="Plat_T4"]
+offset_left = -50.0
+offset_top = -9.0
+offset_right = 50.0
+offset_bottom = 9.0
+color = Color(0.56, 0.93, 0.56)
+
+[node name="Plat_T5" type="StaticBody2D" parent="."]
+position = Vector2(1060, 195)
+[node name="Col" type="CollisionShape2D" parent="Plat_T5"]
+shape = SubResource("plat_t5")
+[node name="Vis" type="ColorRect" parent="Plat_T5"]
+offset_left = -70.0
+offset_top = -9.0
+offset_right = 70.0
+offset_bottom = 9.0
+color = Color(0.42, 0.13, 1.0)
+
+[node name="Plat_T6" type="StaticBody2D" parent="."]
+position = Vector2(1280, 155)
+[node name="Col" type="CollisionShape2D" parent="Plat_T6"]
+shape = SubResource("plat_t6")
+[node name="Vis" type="ColorRect" parent="Plat_T6"]
+offset_left = -40.0
+offset_top = -9.0
+offset_right = 40.0
+offset_bottom = 9.0
+color = Color(1.0, 0.42, 0.13)
+
+[node name="Plat_T7" type="StaticBody2D" parent="."]
+position = Vector2(1520, 120)
+[node name="Col" type="CollisionShape2D" parent="Plat_T7"]
+shape = SubResource("plat_t7")
+[node name="Vis" type="ColorRect" parent="Plat_T7"]
+offset_left = -90.0
+offset_top = -9.0
+offset_right = 90.0
+offset_bottom = 9.0
+color = Color(0.56, 0.93, 0.56)
+
+[node name="Plat_T8" type="StaticBody2D" parent="."]
+position = Vector2(1760, 155)
+[node name="Col" type="CollisionShape2D" parent="Plat_T8"]
+shape = SubResource("plat_t8")
+[node name="Vis" type="ColorRect" parent="Plat_T8"]
+offset_left = -50.0
+offset_top = -9.0
+offset_right = 50.0
+offset_bottom = 9.0
+color = Color(0.42, 0.13, 1.0)
+
+[node name="WallLeft" type="StaticBody2D" parent="."]
+position = Vector2(920, 150)
+[node name="Col" type="CollisionShape2D" parent="WallLeft"]
+shape = SubResource("wall_l")
+[node name="Vis" type="ColorRect" parent="WallLeft"]
+offset_left = -9.0
+offset_top = -60.0
+offset_right = 9.0
+offset_bottom = 60.0
+color = Color(0.42, 0.13, 1.0)
+
+[node name="WallRight" type="StaticBody2D" parent="."]
+position = Vector2(1000, 150)
+[node name="Col" type="CollisionShape2D" parent="WallRight"]
+shape = SubResource("wall_r")
+[node name="Vis" type="ColorRect" parent="WallRight"]
+offset_left = -9.0
+offset_top = -60.0
+offset_right = 9.0
+offset_bottom = 60.0
+color = Color(0.42, 0.13, 1.0)
+
+[node name="Pin1" parent="." instance=ExtResource("4_pin")]
+position = Vector2(180, 222)
+pin_id = "pin_world3_01"
+pin_color = Color(0.3, 0.7, 1.0, 1.0)
+
+[node name="Pin2" parent="." instance=ExtResource("4_pin")]
+position = Vector2(640, 153)
+pin_id = "pin_world3_02"
+pin_color = Color(0.3, 0.7, 1.0, 1.0)
+
+[node name="Pin3" parent="." instance=ExtResource("4_pin")]
+position = Vector2(1280, 128)
+pin_id = "pin_world3_03"
+pin_color = Color(0.3, 0.7, 1.0, 1.0)
+
+[node name="Pin4" parent="." instance=ExtResource("4_pin")]
+position = Vector2(1760, 128)
+pin_id = "pin_world3_04"
+pin_color = Color(0.3, 0.7, 1.0, 1.0)
+
+[node name="LightZone1" type="Area2D" parent="."]
+groups = ["light_zone"]
+position = Vector2(400, 200)
+[node name="LZ1Col" type="CollisionShape2D" parent="LightZone1"]
+[node name="LZ1Vis" type="ColorRect" parent="LightZone1"]
+offset_left = -80.0
+offset_top = -80.0
+offset_right = 80.0
+offset_bottom = 80.0
+color = Color(1.0, 0.95, 0.5, 0.18)
+
+[node name="LightZone2" type="Area2D" parent="."]
+groups = ["light_zone"]
+position = Vector2(1100, 155)
+[node name="LZ2Col" type="CollisionShape2D" parent="LightZone2"]
+[node name="LZ2Vis" type="ColorRect" parent="LightZone2"]
+offset_left = -80.0
+offset_top = -80.0
+offset_right = 80.0
+offset_bottom = 80.0
+color = Color(1.0, 0.95, 0.5, 0.18)
+
+[node name="LightZone3" type="Area2D" parent="."]
+groups = ["light_zone"]
+position = Vector2(1580, 80)
+[node name="LZ3Col" type="CollisionShape2D" parent="LightZone3"]
+[node name="LZ3Vis" type="ColorRect" parent="LightZone3"]
+offset_left = -80.0
+offset_top = -80.0
+offset_right = 80.0
+offset_bottom = 80.0
+color = Color(1.0, 0.95, 0.5, 0.18)
+
+[node name="Enemy1" parent="." instance=ExtResource("5_enemy")]
+position = Vector2(300, 260)
+
+[node name="Enemy2" parent="." instance=ExtResource("5_enemy")]
+position = Vector2(600, 190)
+
+[node name="Enemy3" parent="." instance=ExtResource("5_enemy")]
+position = Vector2(1150, 205)
+
+[node name="BossArena" type="Node2D" parent="."]
+position = Vector2(2000, 0)
+
+[node name="BossFloor" type="StaticBody2D" parent="BossArena"]
+position = Vector2(0, 290)
+[node name="BossFloorCol" type="CollisionShape2D" parent="BossArena/BossFloor"]
+shape = SubResource("floor_shape")
+[node name="BossFloorVis" type="ColorRect" parent="BossArena/BossFloor"]
+offset_left = -400.0
+offset_top = 0.0
+offset_right = 400.0
+offset_bottom = 80.0
+color = Color(0.2, 0.06, 0.32, 1.0)
+
+[node name="BossLightZone" type="Area2D" parent="BossArena"]
+groups = ["light_zone"]
+position = Vector2(200, 200)
+[node name="BossLZCol" type="CollisionShape2D" parent="BossArena/BossLightZone"]
+[node name="BossLZVis" type="ColorRect" parent="BossArena/BossLightZone"]
+offset_left = -100.0
+offset_top = -100.0
+offset_right = 100.0
+offset_bottom = 100.0
+color = Color(1.0, 0.95, 0.5, 0.22)
+
+[node name="Boss" type="Node2D" parent="BossArena"]
+position = Vector2(300, 230)
+script = ExtResource("6_boss")
+
+[node name="LevelEnd" type="Marker2D" parent="."]
+position = Vector2(2600, 200)
+
+[node name="TouchControls" type="CanvasLayer" parent="."]
+layer = 5
+
+[node name="BtnLeft" type="Button" parent="TouchControls"]
+anchor_left = 0.0
+anchor_top = 1.0
+anchor_right = 0.0
+anchor_bottom = 1.0
+offset_left = 10.0
+offset_top = -80.0
+offset_right = 80.0
+offset_bottom = -10.0
+text = "L"
+action_mode = 0
+
+[node name="BtnRight" type="Button" parent="TouchControls"]
+anchor_left = 0.0
+anchor_top = 1.0
+anchor_right = 0.0
+anchor_bottom = 1.0
+offset_left = 90.0
+offset_top = -80.0
+offset_right = 160.0
+offset_bottom = -10.0
+text = "R"
+action_mode = 0
+
+[node name="BtnJump" type="Button" parent="TouchControls"]
+anchor_left = 1.0
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = -80.0
+offset_top = -80.0
+offset_right = -10.0
+offset_bottom = -10.0
+text = "UP"
+action_mode = 0

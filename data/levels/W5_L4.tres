@@ -1,0 +1,26 @@
+[gd_resource type="Resource" script_class="LevelData" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://scripts/LevelData.gd" id="1"]
+
+[resource]
+script = ExtResource("1")
+level_key = "W5_L4"
+world_id = 5
+level_num = 4
+level_name = "El Núcleo"
+next_scene = "res://scenes/levels/W5_Boss.tscn"
+time_par = 170.0
+bg_theme = "secret"
+pin_ids = PackedStringArray("pin_W5_L4_01", "pin_W5_L4_02", "pin_W5_L4_03", "pin_W5_L4_04", "pin_W5_L4_05")
+pin_positions = Array[Vector2]([Vector2(380, 178), Vector2(900, 128), Vector2(1600, 172), Vector2(2200, 118), Vector2(2600, 158)])
+pin_colors = Array[Color]([Color(0.9, 0.1, 0.9, 1), Color(0.9, 0.1, 0.9, 1), Color(0.9, 0.1, 0.9, 1), Color(0.9, 0.1, 0.9, 1), Color(0.9, 0.1, 0.9, 1)])
+enemy_types = PackedStringArray("patrol", "patrol", "patrol", "patrol", "jumper", "jumper", "flying", "flying")
+enemy_positions = Array[Vector2]([Vector2(550, 215), Vector2(1050, 205), Vector2(1750, 215), Vector2(2450, 208), Vector2(1300, 148), Vector2(2300, 140), Vector2(1100, 125), Vector2(2550, 118)])
+enemy_speeds = Array[float]([72.0, 74.0, 73.0, 75.0, 70.0, 72.0, 80.0, 82.0])
+water_rects = Array[Rect2]([Rect2(430, 255, 250, 40), Rect2(1100, 255, 280, 40), Rect2(1900, 255, 260, 40), Rect2(2500, 255, 240, 40)])
+light_rects = Array[Rect2]([Rect2(700, 132, 138, 110), Rect2(1400, 125, 145, 115), Rect2(2100, 122, 138, 112)])
+requires_outfit = ""
+checkpoint_xs = Array[float]([650.0, 1300.0, 1950.0, 2500.0])
+level_end_x = 2800.0
+level_length = 3000.0
+platform_rects = Array[Rect2]([Rect2(200, 215, 72, 14), Rect2(388, 190, 65, 14), Rect2(568, 162, 70, 14), Rect2(755, 135, 65, 14), Rect2(945, 158, 72, 14), Rect2(1145, 180, 65, 14), Rect2(1345, 152, 70, 14), Rect2(1545, 128, 65, 14), Rect2(1748, 150, 72, 14), Rect2(1960, 172, 65, 14), Rect2(2168, 145, 70, 14), Rect2(2378, 120, 65, 14), Rect2(2598, 142, 72, 14), Rect2(2808, 158, 80, 14)])

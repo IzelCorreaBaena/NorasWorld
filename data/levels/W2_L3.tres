@@ -1,0 +1,26 @@
+[gd_resource type="Resource" script_class="LevelData" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://scripts/LevelData.gd" id="1"]
+
+[resource]
+script = ExtResource("1")
+level_key = "W2_L3"
+world_id = 2
+level_num = 3
+level_name = "La Pasarela"
+next_scene = "res://scenes/levels/W2_L4.tscn"
+time_par = 140.0
+bg_theme = "city"
+pin_ids = PackedStringArray("pin_W2_L3_01", "pin_W2_L3_02", "pin_W2_L3_03", "pin_W2_L3_04", "pin_W2_L3_05")
+pin_positions = Array[Vector2]([Vector2(290, 205), Vector2(680, 165), Vector2(1080, 200), Vector2(1520, 160), Vector2(2100, 185)])
+pin_colors = Array[Color]([Color(1, 0.8, 0, 1), Color(1, 0.4, 0.2, 1), Color(0.4, 0.8, 1, 1), Color(0.8, 0.4, 1, 1), Color(0.2, 0.9, 0.4, 1)])
+enemy_types = PackedStringArray("patrol", "patrol", "flying")
+enemy_positions = Array[Vector2]([Vector2(450, 215), Vector2(1000, 215), Vector2(1700, 170)])
+enemy_speeds = Array[float]([65.0, 65.0, 70.0])
+water_rects = Array[Rect2]([])
+light_rects = Array[Rect2]([])
+requires_outfit = ""
+checkpoint_xs = Array[float]([800.0, 1600.0])
+level_end_x = 2400.0
+level_length = 2600.0
+platform_rects = Array[Rect2]([Rect2(180, 225, 150, 14), Rect2(440, 210, 80, 14), Rect2(600, 192, 160, 14), Rect2(860, 175, 80, 14), Rect2(1020, 192, 150, 14), Rect2(1280, 210, 80, 14), Rect2(1440, 175, 160, 14), Rect2(1720, 192, 80, 14), Rect2(1890, 210, 150, 14), Rect2(2150, 192, 90, 14)])

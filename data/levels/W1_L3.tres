@@ -1,0 +1,26 @@
+[gd_resource type="Resource" script_class="LevelData" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://scripts/LevelData.gd" id="1"]
+
+[resource]
+script = ExtResource("1")
+level_key = "W1_L3"
+world_id = 1
+level_num = 3
+level_name = "El Arrecife"
+next_scene = "res://scenes/levels/W1_L4.tscn"
+time_par = 130.0
+bg_theme = "beach"
+pin_ids = PackedStringArray("pin_W1_L3_01", "pin_W1_L3_02", "pin_W1_L3_03", "pin_W1_L3_04", "pin_W1_L3_05")
+pin_positions = Array[Vector2]([Vector2(280, 215), Vector2(580, 175), Vector2(920, 205), Vector2(1350, 170), Vector2(1950, 200)])
+pin_colors = Array[Color]([Color(1, 0.8, 0, 1), Color(1, 0.4, 0.2, 1), Color(0.4, 0.8, 1, 1), Color(0.8, 0.4, 1, 1), Color(0.2, 0.9, 0.4, 1)])
+enemy_types = PackedStringArray("patrol", "patrol", "patrol")
+enemy_positions = Array[Vector2]([Vector2(420, 255), Vector2(800, 215), Vector2(1500, 255)])
+enemy_speeds = Array[float]([60.0, 65.0, 70.0])
+water_rects = Array[Rect2]([Rect2(600, 255, 400, 40)])
+light_rects = Array[Rect2]([])
+requires_outfit = ""
+checkpoint_xs = Array[float]([750.0, 1500.0])
+level_end_x = 2200.0
+level_length = 2400.0
+platform_rects = Array[Rect2]([Rect2(200, 230, 85, 14), Rect2(370, 210, 90, 14), Rect2(540, 188, 80, 14), Rect2(700, 205, 95, 14), Rect2(870, 220, 85, 14), Rect2(1040, 180, 90, 14), Rect2(1210, 198, 80, 14), Rect2(1380, 172, 90, 14), Rect2(1560, 210, 85, 14), Rect2(1740, 188, 95, 14), Rect2(1920, 205, 90, 14)])

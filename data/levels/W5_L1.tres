@@ -1,0 +1,26 @@
+[gd_resource type="Resource" script_class="LevelData" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://scripts/LevelData.gd" id="1"]
+
+[resource]
+script = ExtResource("1")
+level_key = "W5_L1"
+world_id = 5
+level_num = 1
+level_name = "El Umbral"
+next_scene = "res://scenes/levels/W5_L2.tscn"
+time_par = 120.0
+bg_theme = "secret"
+pin_ids = PackedStringArray("pin_W5_L1_01", "pin_W5_L1_02", "pin_W5_L1_03", "pin_W5_L1_04", "pin_W5_L1_05")
+pin_positions = Array[Vector2]([Vector2(330, 185), Vector2(750, 140), Vector2(1200, 178), Vector2(1680, 135), Vector2(1800, 178)])
+pin_colors = Array[Color]([Color(0.9, 0.1, 0.9, 1), Color(0.9, 0.1, 0.9, 1), Color(0.9, 0.1, 0.9, 1), Color(0.9, 0.1, 0.9, 1), Color(0.9, 0.1, 0.9, 1)])
+enemy_types = PackedStringArray("patrol", "patrol", "patrol", "flying")
+enemy_positions = Array[Vector2]([Vector2(480, 215), Vector2(950, 195), Vector2(1450, 210), Vector2(1300, 135)])
+enemy_speeds = Array[float]([70.0, 73.0, 72.0, 76.0])
+water_rects = Array[Rect2]([Rect2(580, 255, 200, 40), Rect2(1200, 255, 180, 40)])
+light_rects = Array[Rect2]([Rect2(650, 142, 130, 105), Rect2(1550, 138, 135, 108)])
+requires_outfit = ""
+checkpoint_xs = Array[float]([700.0, 1400.0])
+level_end_x = 2000.0
+level_length = 2200.0
+platform_rects = Array[Rect2]([Rect2(200, 218, 80, 14), Rect2(390, 195, 72, 14), Rect2(572, 168, 76, 14), Rect2(760, 142, 72, 14), Rect2(950, 165, 80, 14), Rect2(1150, 188, 72, 14), Rect2(1340, 162, 76, 14), Rect2(1530, 140, 72, 14), Rect2(1730, 162, 80, 14), Rect2(1900, 180, 85, 14)])

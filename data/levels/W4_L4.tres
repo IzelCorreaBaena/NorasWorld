@@ -1,0 +1,26 @@
+[gd_resource type="Resource" script_class="LevelData" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://scripts/LevelData.gd" id="1"]
+
+[resource]
+script = ExtResource("1")
+level_key = "W4_L4"
+world_id = 4
+level_num = 4
+level_name = "La Colección Final"
+next_scene = "res://scenes/levels/W4_Boss.tscn"
+time_par = 180.0
+bg_theme = "studio"
+pin_ids = PackedStringArray("pin_W4_L4_01", "pin_W4_L4_02", "pin_W4_L4_03", "pin_W4_L4_04", "pin_W4_L4_05")
+pin_positions = Array[Vector2]([Vector2(360, 185), Vector2(850, 140), Vector2(1500, 178), Vector2(2200, 135), Vector2(2750, 168)])
+pin_colors = Array[Color]([Color(1, 0.8, 0, 1), Color(1, 0.4, 0.2, 1), Color(0.4, 0.8, 1, 1), Color(0.8, 0.4, 1, 1), Color(0.2, 0.9, 0.4, 1)])
+enemy_types = PackedStringArray("patrol", "patrol", "jumper", "jumper", "flying", "flying")
+enemy_positions = Array[Vector2]([Vector2(550, 215), Vector2(1200, 200), Vector2(1000, 162), Vector2(2000, 158), Vector2(1650, 138), Vector2(2600, 132)])
+enemy_speeds = Array[float]([70.0, 72.0, 68.0, 70.0, 75.0, 78.0])
+water_rects = Array[Rect2]([Rect2(500, 255, 220, 40), Rect2(1300, 255, 260, 40), Rect2(2100, 255, 230, 40)])
+light_rects = Array[Rect2]([Rect2(700, 142, 140, 110), Rect2(1500, 138, 140, 115), Rect2(2200, 135, 145, 110)])
+requires_outfit = ""
+checkpoint_xs = Array[float]([700.0, 1400.0, 2100.0, 2600.0])
+level_end_x = 3000.0
+level_length = 3200.0
+platform_rects = Array[Rect2]([Rect2(200, 222, 80, 14), Rect2(390, 200, 72, 14), Rect2(572, 175, 78, 14), Rect2(762, 152, 72, 14), Rect2(950, 172, 80, 14), Rect2(1150, 192, 72, 14), Rect2(1340, 168, 78, 14), Rect2(1540, 145, 72, 14), Rect2(1740, 165, 80, 14), Rect2(1950, 185, 72, 14), Rect2(2150, 160, 78, 14), Rect2(2360, 138, 72, 14), Rect2(2560, 158, 80, 14), Rect2(2760, 172, 90, 14), Rect2(2940, 185, 80, 14)])

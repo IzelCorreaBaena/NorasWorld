@@ -1,0 +1,67 @@
+[gd_scene load_steps=7 format=3]
+
+[ext_resource type="Script" path="res://scripts/Level.gd" id="1"]
+[ext_resource type="Script" path="res://scripts/BossFinal.gd" id="2"]
+[ext_resource type="PackedScene" uid="uid://player" path="res://scenes/Player.tscn" id="3"]
+[ext_resource type="PackedScene" uid="uid://hud" path="res://scenes/HUD.tscn" id="4"]
+
+[sub_resource type="RectangleShape2D" id="FloorShape_1"]
+size = Vector2(2200, 24)
+
+[sub_resource type="RectangleShape2D" id="light_shape_1"]
+size = Vector2(100, 80)
+
+[sub_resource type="RectangleShape2D" id="light_shape_2"]
+size = Vector2(80, 60)
+
+[node name="W5_Boss" type="Node2D"]
+script = ExtResource("1")
+next_level = "res://scenes/WorldMap.tscn"
+level_id = 5
+level_key = "W5_Boss"
+world_name = "La Nora Perdida"
+
+[node name="Player" parent="." instance=ExtResource("3")]
+position = Vector2(80, 258)
+
+[node name="BossFinal" type="Node2D" parent="."]
+script = ExtResource("2")
+
+[node name="HUD" parent="." instance=ExtResource("4")]
+
+[node name="LevelEnd" type="Marker2D" parent="."]
+position = Vector2(700, 220)
+
+[node name="Floor" type="StaticBody2D" parent="."]
+position = Vector2(1100, 279)
+
+[node name="FloorShape" type="CollisionShape2D" parent="Floor"]
+shape = SubResource("FloorShape_1")
+
+[node name="LightZone1" type="Area2D" parent="." groups=["light_zone"]]
+position = Vector2(200, 200)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="LightZone1"]
+shape = SubResource("light_shape_1")
+
+[node name="Vis" type="ColorRect" parent="LightZone1"]
+offset_left = -50.0
+offset_top = -40.0
+offset_right = 50.0
+offset_bottom = 40.0
+color = Color(0.8, 0.4, 1.0, 0.2)
+z_index = -5
+
+[node name="LightZone2" type="Area2D" parent="." groups=["light_zone"]]
+position = Vector2(450, 190)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="LightZone2"]
+shape = SubResource("light_shape_2")
+
+[node name="Vis" type="ColorRect" parent="LightZone2"]
+offset_left = -40.0
+offset_top = -30.0
+offset_right = 40.0
+offset_bottom = 30.0
+color = Color(0.8, 0.4, 1.0, 0.2)
+z_index = -5

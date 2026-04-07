@@ -1,0 +1,6 @@
+[gd_scene format=3 uid="uid://dialog"]
+
+[ext_resource type="Script" path="res://scripts/DialogSystem.gd" id="1_dialog"]
+
+[node name="DialogSystem" type="CanvasLayer"]
+script = ExtResource("1_dialog")

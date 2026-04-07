@@ -1,0 +1,26 @@
+[gd_resource type="Resource" script_class="LevelData" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://scripts/LevelData.gd" id="1"]
+
+[resource]
+script = ExtResource("1")
+level_key = "W4_L2"
+world_id = 4
+level_num = 2
+level_name = "Sueño de Diseño"
+next_scene = "res://scenes/levels/W4_L3.tscn"
+time_par = 135.0
+bg_theme = "studio"
+pin_ids = PackedStringArray("pin_W4_L2_01", "pin_W4_L2_02", "pin_W4_L2_03", "pin_W4_L2_04", "pin_W4_L2_05")
+pin_positions = Array[Vector2]([Vector2(310, 188), Vector2(720, 148), Vector2(1150, 182), Vector2(1650, 142), Vector2(2150, 170)])
+pin_colors = Array[Color]([Color(1, 0.8, 0, 1), Color(1, 0.4, 0.2, 1), Color(0.4, 0.8, 1, 1), Color(0.8, 0.4, 1, 1), Color(0.2, 0.9, 0.4, 1)])
+enemy_types = PackedStringArray("patrol", "patrol", "flying", "flying")
+enemy_positions = Array[Vector2]([Vector2(500, 215), Vector2(1200, 195), Vector2(850, 145), Vector2(1850, 140)])
+enemy_speeds = Array[float]([67.0, 70.0, 72.0, 75.0])
+water_rects = Array[Rect2]([])
+light_rects = Array[Rect2]([Rect2(650, 145, 140, 110), Rect2(1550, 140, 150, 115)])
+requires_outfit = ""
+checkpoint_xs = Array[float]([800.0, 1600.0])
+level_end_x = 2400.0
+level_length = 2600.0
+platform_rects = Array[Rect2]([Rect2(200, 220, 90, 14), Rect2(390, 198, 80, 14), Rect2(570, 172, 85, 14), Rect2(760, 150, 80, 14), Rect2(950, 170, 90, 14), Rect2(1150, 150, 80, 14), Rect2(1350, 172, 85, 14), Rect2(1560, 148, 80, 14), Rect2(1760, 170, 90, 14), Rect2(1970, 188, 80, 14), Rect2(2180, 165, 85, 14)])

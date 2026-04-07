@@ -1,0 +1,48 @@
+[gd_scene load_steps=7 format=3]
+
+[ext_resource type="Script" path="res://scripts/Level.gd" id="1"]
+[ext_resource type="Script" path="res://scripts/BossMannequin.gd" id="2"]
+[ext_resource type="PackedScene" uid="uid://player" path="res://scenes/Player.tscn" id="3"]
+[ext_resource type="PackedScene" uid="uid://hud" path="res://scenes/HUD.tscn" id="4"]
+
+[sub_resource type="RectangleShape2D" id="FloorShape_1"]
+size = Vector2(2200, 24)
+
+[sub_resource type="RectangleShape2D" id="WallShape_1"]
+size = Vector2(16, 400)
+
+[node name="W2_Boss" type="Node2D"]
+script = ExtResource("1")
+next_level = "res://scenes/WorldMap.tscn"
+level_id = 2
+level_key = "W2_Boss"
+world_name = "El Maniqu\u00ed"
+
+[node name="Player" parent="." instance=ExtResource("3")]
+position = Vector2(80, 258)
+
+[node name="BossMannequin" type="Node2D" parent="."]
+script = ExtResource("2")
+
+[node name="HUD" parent="." instance=ExtResource("4")]
+
+[node name="LevelEnd" type="Marker2D" parent="."]
+position = Vector2(600, 220)
+
+[node name="Floor" type="StaticBody2D" parent="."]
+position = Vector2(1100, 279)
+
+[node name="FloorShape" type="CollisionShape2D" parent="Floor"]
+shape = SubResource("FloorShape_1")
+
+[node name="WallLeft" type="StaticBody2D" parent="."]
+position = Vector2(40, 150)
+
+[node name="WallLeftShape" type="CollisionShape2D" parent="WallLeft"]
+shape = SubResource("WallShape_1")
+
+[node name="WallRight" type="StaticBody2D" parent="."]
+position = Vector2(560, 150)
+
+[node name="WallRightShape" type="CollisionShape2D" parent="WallRight"]
+shape = SubResource("WallShape_1")

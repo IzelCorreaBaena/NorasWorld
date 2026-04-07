@@ -1,0 +1,33 @@
+[gd_scene load_steps=5 format=3]
+
+[ext_resource type="Script" path="res://scripts/Level.gd" id="1"]
+[ext_resource type="Script" path="res://scripts/BossMirror.gd" id="2"]
+[ext_resource type="PackedScene" uid="uid://player" path="res://scenes/Player.tscn" id="3"]
+[ext_resource type="PackedScene" uid="uid://hud" path="res://scenes/HUD.tscn" id="4"]
+
+[sub_resource type="RectangleShape2D" id="FloorShape_1"]
+size = Vector2(2200, 24)
+
+[node name="W4_Boss" type="Node2D"]
+script = ExtResource("1")
+next_level = "res://scenes/WorldMap.tscn"
+level_id = 4
+level_key = "W4_Boss"
+world_name = "El Espejo Roto"
+
+[node name="Player" parent="." instance=ExtResource("3")]
+position = Vector2(80, 258)
+
+[node name="BossMirror" type="Node2D" parent="."]
+script = ExtResource("2")
+
+[node name="HUD" parent="." instance=ExtResource("4")]
+
+[node name="LevelEnd" type="Marker2D" parent="."]
+position = Vector2(640, 220)
+
+[node name="Floor" type="StaticBody2D" parent="."]
+position = Vector2(1100, 279)
+
+[node name="FloorShape" type="CollisionShape2D" parent="Floor"]
+shape = SubResource("FloorShape_1")

@@ -1,0 +1,26 @@
+[gd_resource type="Resource" script_class="LevelData" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://scripts/LevelData.gd" id="1"]
+
+[resource]
+script = ExtResource("1")
+level_key = "W3_L4"
+world_id = 3
+level_num = 4
+level_name = "El Ritual"
+next_scene = "res://scenes/levels/W3_Boss.tscn"
+time_par = 170.0
+bg_theme = "tribe"
+pin_ids = PackedStringArray("pin_W3_L4_01", "pin_W3_L4_02", "pin_W3_L4_03", "pin_W3_L4_04", "pin_W3_L4_05")
+pin_positions = Array[Vector2]([Vector2(350, 195), Vector2(800, 148), Vector2(1350, 185), Vector2(1950, 142), Vector2(2550, 175)])
+pin_colors = Array[Color]([Color(1, 0.8, 0, 1), Color(1, 0.4, 0.2, 1), Color(0.4, 0.8, 1, 1), Color(0.8, 0.4, 1, 1), Color(0.2, 0.9, 0.4, 1)])
+enemy_types = PackedStringArray("patrol", "patrol", "jumper", "flying")
+enemy_positions = Array[Vector2]([Vector2(520, 215), Vector2(1200, 200), Vector2(1750, 170), Vector2(2300, 145)])
+enemy_speeds = Array[float]([68.0, 70.0, 65.0, 72.0])
+water_rects = Array[Rect2]([Rect2(600, 255, 200, 40), Rect2(1500, 255, 250, 40)])
+light_rects = Array[Rect2]([Rect2(350, 155, 130, 100), Rect2(950, 148, 140, 110), Rect2(1700, 145, 130, 100), Rect2(2350, 148, 140, 110)])
+requires_outfit = ""
+checkpoint_xs = Array[float]([700.0, 1400.0, 2100.0])
+level_end_x = 2800.0
+level_length = 3000.0
+platform_rects = Array[Rect2]([Rect2(200, 222, 75, 14), Rect2(390, 198, 70, 14), Rect2(570, 172, 70, 14), Rect2(755, 150, 70, 14), Rect2(940, 168, 75, 14), Rect2(1130, 190, 70, 14), Rect2(1320, 165, 70, 14), Rect2(1510, 145, 70, 14), Rect2(1700, 165, 75, 14), Rect2(1900, 185, 70, 14), Rect2(2100, 158, 70, 14), Rect2(2300, 140, 70, 14), Rect2(2510, 160, 75, 14), Rect2(2700, 175, 85, 14)])

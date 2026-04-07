@@ -1,0 +1,26 @@
+[gd_resource type="Resource" script_class="LevelData" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://scripts/LevelData.gd" id="1"]
+
+[resource]
+script = ExtResource("1")
+level_key = "W4_L3"
+world_id = 4
+level_num = 3
+level_name = "El Espejo"
+next_scene = "res://scenes/levels/W4_L4.tscn"
+time_par = 155.0
+bg_theme = "studio"
+pin_ids = PackedStringArray("pin_W4_L3_01", "pin_W4_L3_02", "pin_W4_L3_03", "pin_W4_L3_04", "pin_W4_L3_05")
+pin_positions = Array[Vector2]([Vector2(280, 190), Vector2(700, 145), Vector2(1300, 190), Vector2(1900, 145), Vector2(2350, 180)])
+pin_colors = Array[Color]([Color(1, 0.8, 0, 1), Color(1, 0.4, 0.2, 1), Color(0.4, 0.8, 1, 1), Color(0.8, 0.4, 1, 1), Color(0.2, 0.9, 0.4, 1)])
+enemy_types = PackedStringArray("patrol", "patrol", "patrol", "jumper", "flying")
+enemy_positions = Array[Vector2]([Vector2(450, 215), Vector2(950, 185), Vector2(1650, 215), Vector2(1200, 162), Vector2(2100, 142)])
+enemy_speeds = Array[float]([68.0, 70.0, 68.0, 65.0, 74.0])
+water_rects = Array[Rect2]([])
+light_rects = Array[Rect2]([Rect2(550, 148, 130, 100), Rect2(1100, 165, 140, 90), Rect2(1800, 148, 130, 100)])
+requires_outfit = ""
+checkpoint_xs = Array[float]([750.0, 1500.0])
+level_end_x = 2600.0
+level_length = 2800.0
+platform_rects = Array[Rect2]([Rect2(200, 220, 85, 14), Rect2(385, 198, 75, 14), Rect2(565, 170, 80, 14), Rect2(755, 148, 75, 14), Rect2(945, 170, 85, 14), Rect2(1145, 192, 75, 14), Rect2(1335, 192, 75, 14), Rect2(1530, 170, 85, 14), Rect2(1730, 148, 75, 14), Rect2(1920, 170, 80, 14), Rect2(2110, 192, 75, 14), Rect2(2300, 170, 85, 14), Rect2(2480, 185, 90, 14)])
