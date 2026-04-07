@@ -44,3 +44,16 @@ extends Resource
 # ── OBSTÁCULOS DE PARKOUR ─────────────────────
 # Rect2(x, y, width, height) — la barrera bloquea al jugador de pie, no al agachado
 @export var crouch_barrier_rects : Array[Rect2] = []
+
+# ── HAZARDS (PINCHOS) ────────────────────────
+@export var hazard_rects : Array[Rect2] = []
+
+# ── ITEMS ────────────────────────────────────
+@export var item_positions : Array[Vector2] = []
+@export var item_types     : PackedStringArray = []  # "health","speed_boost","shield"
+
+# ── NPC ALIADOS ───────────────────────────────
+@export var npc_positions : Array[Vector2] = []
+@export var npc_names     : PackedStringArray = []
+@export var npc_dialogs   : PackedStringArray = []
+@export var npc_colors    : Array[Color] = []
