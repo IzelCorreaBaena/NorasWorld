@@ -33,6 +33,17 @@ const THEME_ASSETS := {
 	"secret" : {"scene": "res://assets/world5_scene.png",        "tileset": "res://assets/world5_tileset.png"},
 }
 
+// REGION DEL TILESET PARA SUPERFICIE DE PLATAFORMA
+// Rect2(x, y, w, h) dentro del tileset: solo el tile de superficie plana.
+// beach: 1024x1024 | city/tribe/studio/secret: 2816x1536
+const THEME_PLATFORM_REGIONS := {
+	"beach"  : Rect2(  0,   0, 256,  80),
+	"city"   : Rect2(  0, 100, 500,  50),
+	"tribe"  : Rect2(  0,   0, 500,  90),
+	"studio" : Rect2(  0,   0, 500,  80),
+	"secret" : Rect2(  0,   0, 500,  80),
+}
+
 var _player    : Node2D
 var _hud       : Node
 var _timer_node: Node
@@ -126,20 +137,20 @@ func _apply_theme() -> void:
 	bg.z_index = -10
 	add_child(bg)
 
-	# Fondo parallax con la scene image (z=-9, desplazamiento 30% del scroll)
+	# Fondo parallax con la scene image — viewport 480x270, layer=-9
 	var scene_tex := load(assets["scene"]) as Texture2D
 	if scene_tex:
 		var parallax := ParallaxBackground.new()
-		parallax.z_index = -9
+		parallax.layer = -9
 		var layer := ParallaxLayer.new()
 		layer.motion_scale     = Vector2(0.3, 0.0)
-		layer.motion_mirroring = Vector2(scene_tex.get_width(), 0.0)
+		layer.motion_mirroring = Vector2(480.0, 0.0)
 		var bg_rect := TextureRect.new()
-		bg_rect.texture      = scene_tex
-		bg_rect.stretch_mode = TextureRect.STRETCH_KEEP_ASPECT_COVERED
-		bg_rect.size         = Vector2(scene_tex.get_width(), 300)
-		bg_rect.position     = Vector2(0.0, -60.0)
-		bg_rect.texture_filter = CanvasItem.TEXTURE_FILTER_NEAREST
+		bg_rect.texture        = scene_tex
+		bg_rect.stretch_mode   = TextureRect.STRETCH_KEEP_ASPECT_COVERED
+		bg_rect.size           = Vector2(480.0, 270.0)
+		bg_rect.position       = Vector2(0.0, 0.0)
+		bg_rect.texture_filter = CanvasItem.TEXTURE_FILTER_LINEAR
 		layer.add_child(bg_rect)
 		parallax.add_child(layer)
 		add_child(parallax)
@@ -231,23 +242,36 @@ func _make_zone(rect: Rect2, color: Color, group: String) -> Area2D:
 	return z
 
 func _make_platform_visual(size: Vector2, theme: String, is_floor: bool = false) -> Node:
-	var assets    = THEME_ASSETS.get(theme, THEME_ASSETS["beach"])
+	var c      = THEME_COLORS.get(theme, THEME_COLORS["beach"])
+	var assets = THEME_ASSETS.get(theme, THEME_ASSETS["beach"])
+	var region = THEME_PLATFORM_REGIONS.get(theme, THEME_PLATFORM_REGIONS["beach"])
+
+	# Nodo contenedor (posicionado en el centro del StaticBody)
+	var root := Node2D.new()
+	root.position = -size * 0.5
+
+	# Capa 1 — relleno sólido con color del tema (sin grises transparentes)
+	var body := ColorRect.new()
+	body.size  = size
+	body.color = c["floor"] if is_floor else c["plat"]
+	root.add_child(body)
+
+	# Capa 2 — strip de textura solo en la superficie superior
 	var tileset_tex := load(assets["tileset"]) as Texture2D
 	if tileset_tex:
-		var vis := TextureRect.new()
-		vis.size         = size
-		vis.position     = -size * 0.5
-		vis.texture      = tileset_tex
-		vis.stretch_mode = TextureRect.STRETCH_TILE
-		vis.texture_filter = CanvasItem.TEXTURE_FILTER_NEAREST
-		return vis
-	# Fallback a ColorRect si no carga la textura
-	var c   = THEME_COLORS.get(theme, THEME_COLORS["beach"])
-	var cr  := ColorRect.new()
-	cr.size     = size
-	cr.position = -size * 0.5
-	cr.color    = c["floor"] if is_floor else c["plat"]
-	return cr
+		var atlas := AtlasTexture.new()
+		atlas.atlas  = tileset_tex
+		atlas.region = region
+		var strip_h  := min(size.y, 10.0) if not is_floor else min(size.y * 0.4, 10.0)
+		var tex := TextureRect.new()
+		tex.texture        = atlas
+		tex.size           = Vector2(size.x, strip_h)
+		tex.position       = Vector2(0.0, 0.0)
+		tex.stretch_mode   = TextureRect.STRETCH_TILE
+		tex.texture_filter = CanvasItem.TEXTURE_FILTER_LINEAR
+		root.add_child(tex)
+
+	return root
 
 func _spawn_platforms() -> void:
 	var theme     := data.bg_theme if data.bg_theme != "" else "beach"

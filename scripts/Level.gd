@@ -54,16 +54,16 @@ func _spawn_background() -> void:
 	if scene_tex == null:
 		return
 	var parallax := ParallaxBackground.new()
-	parallax.z_index = -9
+	parallax.layer = -9
 	var layer := ParallaxLayer.new()
 	layer.motion_scale     = Vector2(0.3, 0.0)
-	layer.motion_mirroring = Vector2(scene_tex.get_width(), 0.0)
+	layer.motion_mirroring = Vector2(480.0, 0.0)
 	var bg_rect := TextureRect.new()
-	bg_rect.texture      = scene_tex
-	bg_rect.stretch_mode = TextureRect.STRETCH_KEEP_ASPECT_COVERED
-	bg_rect.size         = Vector2(scene_tex.get_width(), 300)
-	bg_rect.position     = Vector2(0.0, -60.0)
-	bg_rect.texture_filter = CanvasItem.TEXTURE_FILTER_NEAREST
+	bg_rect.texture        = scene_tex
+	bg_rect.stretch_mode   = TextureRect.STRETCH_KEEP_ASPECT_COVERED
+	bg_rect.size           = Vector2(480.0, 270.0)
+	bg_rect.position       = Vector2(0.0, 0.0)
+	bg_rect.texture_filter = CanvasItem.TEXTURE_FILTER_LINEAR
 	layer.add_child(bg_rect)
 	parallax.add_child(layer)
 	add_child(parallax)
