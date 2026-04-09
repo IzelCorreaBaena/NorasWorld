@@ -25,3 +25,11 @@ level_end_x = 2700.0
 level_length = 3000.0
 crouch_barrier_rects = Array[Rect2]([Rect2(830, 229, 110, 18), Rect2(1750, 229, 100, 18)])
 platform_rects = Array[Rect2]([Rect2(200, 227, 95, 14), Rect2(440, 209, 90, 14), Rect2(680, 224, 85, 14), Rect2(920, 205, 90, 14), Rect2(1160, 219, 85, 14), Rect2(1400, 200, 90, 14), Rect2(1640, 214, 85, 14), Rect2(1880, 197, 90, 14), Rect2(2120, 212, 85, 14), Rect2(2360, 195, 90, 14), Rect2(2600, 210, 90, 14)])
+
+hazard_rects = Array[Rect2]([Rect2(700, 262, 32, 10), Rect2(1450, 262, 32, 10)])
+item_positions = Array[Vector2]([Vector2(400, 248), Vector2(1900, 248)])
+item_types = PackedStringArray("speed_boost", "health")
+npc_positions = Array[Vector2]([Vector2(150, 255)])
+npc_names = PackedStringArray("PETRA")
+npc_dialogs = PackedStringArray("El taller huele a telas nuevas. ¡Vamos a crear algo increíble!")
+npc_colors = Array[Color]([Color(0.7, 0.3, 0.9, 1.0)])

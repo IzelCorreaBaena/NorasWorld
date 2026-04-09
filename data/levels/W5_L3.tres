@@ -25,3 +25,11 @@ level_end_x = 3600.0
 level_length = 3950.0
 crouch_barrier_rects = Array[Rect2]([Rect2(840, 229, 110, 18), Rect2(1640, 229, 100, 18), Rect2(2540, 229, 110, 18)])
 platform_rects = Array[Rect2]([Rect2(200, 220, 80, 14), Rect2(430, 196, 75, 14), Rect2(660, 170, 78, 14), Rect2(890, 148, 75, 14), Rect2(1120, 168, 80, 14), Rect2(1350, 188, 75, 14), Rect2(1580, 162, 78, 14), Rect2(1810, 142, 75, 14), Rect2(2040, 162, 80, 14), Rect2(2270, 180, 75, 14), Rect2(2500, 155, 78, 14), Rect2(2730, 135, 75, 14), Rect2(2960, 155, 80, 14), Rect2(3190, 172, 75, 14), Rect2(3420, 148, 78, 14), Rect2(3650, 160, 85, 14)])
+
+hazard_rects = Array[Rect2]([Rect2(600, 262, 32, 10), Rect2(1200, 262, 64, 10), Rect2(1900, 262, 32, 10), Rect2(2600, 262, 48, 10)])
+item_positions = Array[Vector2]([Vector2(700, 240), Vector2(2300, 240)])
+item_types = PackedStringArray("health", "health")
+npc_positions = Array[Vector2]([Vector2(150, 255)])
+npc_names = PackedStringArray("MEMORIA")
+npc_dialogs = PackedStringArray("Aquí están todos tus recuerdos. No los dejes atrás.")
+npc_colors = Array[Color]([Color(0.8, 0.6, 1.0, 1.0)])

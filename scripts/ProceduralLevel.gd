@@ -15,13 +15,22 @@ const NPC_SCENE      := preload("res://scenes/NPCAlly.tscn")
 
 @export var data : LevelData
 
-# ── COLORES POR TEMA ──────────────────────────
+# ── COLORES POR TEMA (fallback sin textura) ───
 const THEME_COLORS := {
 	"beach"  : {"bg": Color(0.38, 0.72, 0.92), "floor": Color(0.82, 0.72, 0.50), "plat": Color(0.70, 0.58, 0.36)},
 	"city"   : {"bg": Color(0.07, 0.07, 0.12), "floor": Color(0.18, 0.18, 0.20), "plat": Color(0.26, 0.26, 0.30)},
 	"tribe"  : {"bg": Color(0.22, 0.08, 0.35), "floor": Color(0.35, 0.14, 0.22), "plat": Color(0.48, 0.20, 0.30)},
 	"studio" : {"bg": Color(0.06, 0.04, 0.12), "floor": Color(0.20, 0.10, 0.35), "plat": Color(0.35, 0.15, 0.55)},
 	"secret" : {"bg": Color(0.02, 0.02, 0.08), "floor": Color(0.10, 0.05, 0.20), "plat": Color(0.20, 0.10, 0.40)},
+}
+
+# ── ASSETS DE TEXTURA POR TEMA ────────────────
+const THEME_ASSETS := {
+	"beach"  : {"scene": "res://assets/world1_beach_scene.png",  "tileset": "res://assets/world1_beach_tileset.png.png"},
+	"city"   : {"scene": "res://assets/world2_scene.png",        "tileset": "res://assets/world2_tileset.png"},
+	"tribe"  : {"scene": "res://assets/world3_scene.png",        "tileset": "res://assets/world4_tileset.png"},
+	"studio" : {"scene": "res://assets/world5_scene.png",        "tileset": "res://assets/world5_tileset.png"},
+	"secret" : {"scene": "res://assets/world5_scene.png",        "tileset": "res://assets/world5_tileset.png"},
 }
 
 var _player    : Node2D
@@ -103,9 +112,12 @@ func _process(_delta: float) -> void:
 
 # ── CONSTRUCCIÓN ─────────────────────────────
 func _apply_theme() -> void:
-	var theme := data.bg_theme if data.bg_theme != "" else "beach"
-	var c     = THEME_COLORS.get(theme, THEME_COLORS["beach"])
-	var bg    := ColorRect.new()
+	var theme  := data.bg_theme if data.bg_theme != "" else "beach"
+	var c       = THEME_COLORS.get(theme, THEME_COLORS["beach"])
+	var assets  = THEME_ASSETS.get(theme, THEME_ASSETS["beach"])
+
+	# Fondo sólido de color (siempre, como capa base z=-10)
+	var bg := ColorRect.new()
 	bg.offset_left   = -500.0
 	bg.offset_top    = -600.0
 	bg.offset_right  = data.level_length + 500.0
@@ -113,10 +125,29 @@ func _apply_theme() -> void:
 	bg.color   = c["bg"]
 	bg.z_index = -10
 	add_child(bg)
-	# Actualizar colores del suelo si existe
+
+	# Fondo parallax con la scene image (z=-9, desplazamiento 30% del scroll)
+	var scene_tex := load(assets["scene"]) as Texture2D
+	if scene_tex:
+		var parallax := ParallaxBackground.new()
+		parallax.z_index = -9
+		var layer := ParallaxLayer.new()
+		layer.motion_scale     = Vector2(0.3, 0.0)
+		layer.motion_mirroring = Vector2(scene_tex.get_width(), 0.0)
+		var bg_rect := TextureRect.new()
+		bg_rect.texture      = scene_tex
+		bg_rect.stretch_mode = TextureRect.STRETCH_KEEP_ASPECT_COVERED
+		bg_rect.size         = Vector2(scene_tex.get_width(), 300)
+		bg_rect.position     = Vector2(0.0, -60.0)
+		bg_rect.texture_filter = CanvasItem.TEXTURE_FILTER_NEAREST
+		layer.add_child(bg_rect)
+		parallax.add_child(layer)
+		add_child(parallax)
+
+	# Actualizar colores del suelo manual si existe
 	var floor_vis := get_node_or_null("Floor/FloorVisual")
 	if floor_vis: floor_vis.color = c["floor"]
-	# Plataformas (manuales con nodo "Vis" y procedurales con ColorRect)
+	# Plataformas manuales con nodo "Vis"
 	var plat_root := get_node_or_null("Platforms")
 	if plat_root:
 		for plat in plat_root.get_children():
@@ -124,7 +155,6 @@ func _apply_theme() -> void:
 			if vis and vis is ColorRect:
 				vis.color = c["plat"]
 			else:
-				# Plataformas procedurales: buscar ColorRect hijo directo
 				for child in plat.get_children():
 					if child is ColorRect:
 						child.color = c["plat"]
@@ -200,24 +230,39 @@ func _make_zone(rect: Rect2, color: Color, group: String) -> Area2D:
 	z.add_child(vis)
 	return z
 
+func _make_platform_visual(size: Vector2, theme: String, is_floor: bool = false) -> Node:
+	var assets    = THEME_ASSETS.get(theme, THEME_ASSETS["beach"])
+	var tileset_tex := load(assets["tileset"]) as Texture2D
+	if tileset_tex:
+		var vis := TextureRect.new()
+		vis.size         = size
+		vis.position     = -size * 0.5
+		vis.texture      = tileset_tex
+		vis.stretch_mode = TextureRect.STRETCH_TILE
+		vis.texture_filter = CanvasItem.TEXTURE_FILTER_NEAREST
+		return vis
+	# Fallback a ColorRect si no carga la textura
+	var c   = THEME_COLORS.get(theme, THEME_COLORS["beach"])
+	var cr  := ColorRect.new()
+	cr.size     = size
+	cr.position = -size * 0.5
+	cr.color    = c["floor"] if is_floor else c["plat"]
+	return cr
+
 func _spawn_platforms() -> void:
-	var theme := data.bg_theme if data.bg_theme != "" else "beach"
-	var c     = THEME_COLORS.get(theme, THEME_COLORS["beach"])
+	var theme     := data.bg_theme if data.bg_theme != "" else "beach"
 	var plat_root := get_node_or_null("Platforms")
 
 	# Suelo sólido visible que recorre todo el nivel
 	var ground_w := data.level_length + 400.0
 	var ground   := StaticBody2D.new()
 	ground.position = Vector2(data.level_length * 0.5, 279.0)
-	var gc   := CollisionShape2D.new()
-	var gs   := RectangleShape2D.new()
-	gs.size  = Vector2(ground_w, 24.0)
+	var gc  := CollisionShape2D.new()
+	var gs  := RectangleShape2D.new()
+	gs.size = Vector2(ground_w, 24.0)
 	gc.shape = gs
 	ground.add_child(gc)
-	var gv      := ColorRect.new()
-	gv.size     = gs.size
-	gv.position = -gs.size * 0.5
-	gv.color    = c["floor"]
+	var gv := _make_platform_visual(gs.size, theme, true)
 	ground.add_child(gv)
 	add_child(ground)
 
@@ -231,10 +276,7 @@ func _spawn_platforms() -> void:
 		col.shape  = shape
 		body.add_child(col)
 
-		var vis := ColorRect.new()
-		vis.size     = rect.size
-		vis.position = -rect.size * 0.5
-		vis.color    = c["plat"]
+		var vis := _make_platform_visual(rect.size, theme)
 		body.add_child(vis)
 
 		if plat_root:

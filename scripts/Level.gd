@@ -10,6 +10,21 @@ const YELI_SCENE    := preload("res://scenes/Yeli.tscn")
 @export var pins_in_level   : int    = 5
 @export var checkpoint_xs   : Array[float] = []
 
+const WORLD_SCENE_ASSETS := {
+	1: "res://assets/world1_beach_scene.png",
+	2: "res://assets/world2_scene.png",
+	3: "res://assets/world3_scene.png",
+	4: "res://assets/world5_scene.png",
+	5: "res://assets/world5_scene.png",
+}
+const WORLD_BG_COLORS := {
+	1: Color(0.38, 0.72, 0.92),
+	2: Color(0.07, 0.07, 0.12),
+	3: Color(0.22, 0.08, 0.35),
+	4: Color(0.06, 0.04, 0.12),
+	5: Color(0.02, 0.02, 0.08),
+}
+
 @onready var player     = $Player
 @onready var level_end  = $LevelEnd
 @onready var hud        = $HUD
@@ -21,11 +36,44 @@ var _no_damage       := true
 var _health_before   : int
 var _timer_node      : Node
 
+func _spawn_background() -> void:
+	var bg_color := WORLD_BG_COLORS.get(level_id, Color(0.05, 0.05, 0.1))
+	var bg := ColorRect.new()
+	bg.offset_left   = -500.0
+	bg.offset_top    = -600.0
+	bg.offset_right  = 3000.0
+	bg.offset_bottom = 1000.0
+	bg.color   = bg_color
+	bg.z_index = -10
+	add_child(bg)
+
+	var scene_path_tex := WORLD_SCENE_ASSETS.get(level_id, "")
+	if scene_path_tex == "":
+		return
+	var scene_tex := load(scene_path_tex) as Texture2D
+	if scene_tex == null:
+		return
+	var parallax := ParallaxBackground.new()
+	parallax.z_index = -9
+	var layer := ParallaxLayer.new()
+	layer.motion_scale     = Vector2(0.3, 0.0)
+	layer.motion_mirroring = Vector2(scene_tex.get_width(), 0.0)
+	var bg_rect := TextureRect.new()
+	bg_rect.texture      = scene_tex
+	bg_rect.stretch_mode = TextureRect.STRETCH_KEEP_ASPECT_COVERED
+	bg_rect.size         = Vector2(scene_tex.get_width(), 300)
+	bg_rect.position     = Vector2(0.0, -60.0)
+	bg_rect.texture_filter = CanvasItem.TEXTURE_FILTER_NEAREST
+	layer.add_child(bg_rect)
+	parallax.add_child(layer)
+	add_child(parallax)
+
 func _ready() -> void:
 	var scene_path := get_tree().current_scene.scene_file_path
 	if scene_path == "":
 		scene_path = "res://scenes/World%d.tscn" % level_id
 	GameManager.current_level = scene_path
+	_spawn_background()
 
 	# Restaurar checkpoint
 	if GameManager.checkpoint_pos != Vector2.ZERO:

@@ -25,3 +25,11 @@ level_end_x = 3050.0
 level_length = 3400.0
 crouch_barrier_rects = Array[Rect2]([Rect2(820, 229, 110, 18), Rect2(1490, 229, 100, 18), Rect2(2170, 229, 110, 18)])
 platform_rects = Array[Rect2]([Rect2(200, 225, 85, 14), Rect2(430, 207, 80, 14), Rect2(660, 221, 80, 14), Rect2(890, 203, 85, 14), Rect2(1120, 217, 80, 14), Rect2(1350, 199, 85, 14), Rect2(1580, 213, 80, 14), Rect2(1810, 196, 85, 14), Rect2(2040, 210, 80, 14), Rect2(2270, 194, 85, 14), Rect2(2500, 208, 80, 14), Rect2(2730, 193, 85, 14), Rect2(2960, 207, 85, 14)])
+
+hazard_rects = Array[Rect2]([Rect2(650, 262, 32, 10), Rect2(1350, 262, 48, 10), Rect2(2100, 262, 32, 10)])
+item_positions = Array[Vector2]([Vector2(500, 240), Vector2(2250, 240)])
+item_types = PackedStringArray("shield", "speed_boost")
+npc_positions = Array[Vector2]([Vector2(150, 255)])
+npc_names = PackedStringArray("SUKI")
+npc_dialogs = PackedStringArray("En el sueño del diseño todo es posible. ¡No despiertes todavía!")
+npc_colors = Array[Color]([Color(0.5, 0.5, 1.0, 1.0)])

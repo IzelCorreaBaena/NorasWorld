@@ -25,3 +25,11 @@ level_end_x = 2700.0
 level_length = 3050.0
 crouch_barrier_rects = Array[Rect2]([Rect2(990, 229, 110, 18), Rect2(1920, 229, 110, 18)])
 platform_rects = Array[Rect2]([Rect2(180, 231, 95, 14), Rect2(410, 215, 95, 14), Rect2(640, 228, 90, 14), Rect2(870, 213, 95, 14), Rect2(1100, 226, 90, 14), Rect2(1330, 211, 95, 14), Rect2(1560, 224, 90, 14), Rect2(1790, 209, 95, 14), Rect2(2020, 222, 90, 14), Rect2(2250, 207, 95, 14), Rect2(2480, 221, 90, 14), Rect2(2710, 213, 95, 14)])
+
+hazard_rects = Array[Rect2]([Rect2(650, 262, 32, 10), Rect2(1350, 262, 48, 10), Rect2(2050, 262, 32, 10)])
+item_positions = Array[Vector2]([Vector2(480, 240), Vector2(2200, 240)])
+item_types = PackedStringArray("shield", "speed_boost")
+npc_positions = Array[Vector2]([Vector2(150, 255)])
+npc_names = PackedStringArray("RAFA")
+npc_dialogs = PackedStringArray("Desde los tejados se ve toda la pasarela. ¡Cuidado con el borde!")
+npc_colors = Array[Color]([Color(0.6, 0.6, 1.0, 1.0)])

@@ -25,3 +25,11 @@ level_end_x = 3250.0
 level_length = 3600.0
 crouch_barrier_rects = Array[Rect2]([Rect2(780, 229, 110, 18), Rect2(1480, 229, 100, 18), Rect2(2380, 229, 110, 18)])
 platform_rects = Array[Rect2]([Rect2(190, 231, 85, 14), Rect2(420, 213, 80, 14), Rect2(650, 227, 75, 14), Rect2(880, 209, 80, 14), Rect2(1110, 222, 75, 14), Rect2(1340, 206, 80, 14), Rect2(1570, 219, 75, 14), Rect2(1800, 204, 80, 14), Rect2(2030, 217, 75, 14), Rect2(2260, 203, 80, 14), Rect2(2490, 216, 75, 14), Rect2(2720, 202, 80, 14), Rect2(2950, 215, 75, 14), Rect2(3180, 215, 85, 14)])
+
+hazard_rects = Array[Rect2]([Rect2(600, 262, 32, 10), Rect2(1200, 262, 48, 10), Rect2(1950, 262, 32, 10), Rect2(2650, 262, 32, 10)])
+item_positions = Array[Vector2]([Vector2(450, 240), Vector2(2100, 240)])
+item_types = PackedStringArray("health", "shield")
+npc_positions = Array[Vector2]([Vector2(150, 255)])
+npc_names = PackedStringArray("KIRA")
+npc_dialogs = PackedStringArray("Las ruinas aún vibran con la energía del ritual antiguo.")
+npc_colors = Array[Color]([Color(0.8, 0.5, 0.2, 1.0)])

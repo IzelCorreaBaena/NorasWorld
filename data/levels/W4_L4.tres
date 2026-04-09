@@ -25,3 +25,11 @@ level_end_x = 3850.0
 level_length = 4200.0
 crouch_barrier_rects = Array[Rect2]([Rect2(820, 229, 110, 18), Rect2(1490, 229, 100, 18), Rect2(2160, 229, 110, 18), Rect2(3060, 229, 100, 18)])
 platform_rects = Array[Rect2]([Rect2(200, 221, 80, 14), Rect2(430, 203, 72, 14), Rect2(660, 217, 72, 14), Rect2(890, 199, 80, 14), Rect2(1120, 213, 72, 14), Rect2(1350, 195, 80, 14), Rect2(1580, 209, 72, 14), Rect2(1810, 192, 80, 14), Rect2(2040, 206, 72, 14), Rect2(2270, 190, 80, 14), Rect2(2500, 204, 72, 14), Rect2(2730, 189, 80, 14), Rect2(2960, 202, 72, 14), Rect2(3190, 188, 80, 14), Rect2(3420, 201, 72, 14), Rect2(3650, 201, 85, 14)])
+
+hazard_rects = Array[Rect2]([Rect2(600, 262, 32, 10), Rect2(1200, 262, 48, 10), Rect2(1900, 262, 32, 10), Rect2(2700, 262, 48, 10)])
+item_positions = Array[Vector2]([Vector2(900, 240), Vector2(2500, 240)])
+item_types = PackedStringArray("health", "speed_boost")
+npc_positions = Array[Vector2]([Vector2(150, 255)])
+npc_names = PackedStringArray("NOEL")
+npc_dialogs = PackedStringArray("La colección final está lista. ¡Muéstrale al mundo quién eres!")
+npc_colors = Array[Color]([Color(1.0, 0.9, 0.3, 1.0)])

@@ -25,3 +25,11 @@ level_end_x = 3700.0
 level_length = 4050.0
 crouch_barrier_rects = Array[Rect2]([Rect2(830, 229, 110, 18), Rect2(1530, 229, 100, 18), Rect2(2250, 229, 110, 18), Rect2(2970, 229, 100, 18)])
 platform_rects = Array[Rect2]([Rect2(200, 229, 85, 14), Rect2(440, 211, 80, 14), Rect2(680, 225, 75, 14), Rect2(920, 207, 80, 14), Rect2(1160, 220, 75, 14), Rect2(1400, 204, 80, 14), Rect2(1640, 217, 75, 14), Rect2(1880, 202, 80, 14), Rect2(2120, 215, 75, 14), Rect2(2360, 201, 80, 14), Rect2(2600, 214, 75, 14), Rect2(2840, 201, 80, 14), Rect2(3080, 213, 75, 14), Rect2(3320, 200, 80, 14), Rect2(3560, 213, 85, 14)])
+
+hazard_rects = Array[Rect2]([Rect2(550, 262, 32, 10), Rect2(1100, 262, 48, 10), Rect2(1750, 262, 48, 10), Rect2(2500, 262, 48, 10)])
+item_positions = Array[Vector2]([Vector2(800, 240), Vector2(2300, 240)])
+item_types = PackedStringArray("health", "speed_boost")
+npc_positions = Array[Vector2]([])
+npc_names = PackedStringArray()
+npc_dialogs = PackedStringArray()
+npc_colors = Array[Color]([])

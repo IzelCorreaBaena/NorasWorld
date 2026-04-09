@@ -25,3 +25,11 @@ level_end_x = 2550.0
 level_length = 2850.0
 crouch_barrier_rects = Array[Rect2]([Rect2(810, 229, 110, 18), Rect2(1720, 229, 100, 18)])
 platform_rects = Array[Rect2]([Rect2(180, 233, 90, 14), Rect2(420, 217, 90, 14), Rect2(660, 231, 85, 14), Rect2(900, 215, 90, 14), Rect2(1140, 205, 85, 14), Rect2(1380, 219, 90, 14), Rect2(1620, 207, 85, 14), Rect2(1860, 222, 90, 14), Rect2(2100, 209, 85, 14), Rect2(2340, 223, 90, 14), Rect2(2580, 212, 90, 14)])
+
+hazard_rects = Array[Rect2]([Rect2(650, 262, 32, 10), Rect2(1300, 262, 32, 10)])
+item_positions = Array[Vector2]([Vector2(400, 248), Vector2(1800, 248)])
+item_types = PackedStringArray("health", "speed_boost")
+npc_positions = Array[Vector2]([Vector2(150, 255)])
+npc_names = PackedStringArray("TARA")
+npc_dialogs = PackedStringArray("La fogata une a la tribu. Bienvenida al bosque sagrado.")
+npc_colors = Array[Color]([Color(1.0, 0.6, 0.1, 1.0)])

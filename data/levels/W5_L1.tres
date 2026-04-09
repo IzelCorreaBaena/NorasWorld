@@ -25,3 +25,11 @@ level_end_x = 2800.0
 level_length = 3100.0
 crouch_barrier_rects = Array[Rect2]([Rect2(890, 229, 110, 18), Rect2(1810, 229, 100, 18)])
 platform_rects = Array[Rect2]([Rect2(200, 218, 80, 14), Rect2(430, 200, 72, 14), Rect2(660, 178, 76, 14), Rect2(890, 158, 72, 14), Rect2(1120, 178, 80, 14), Rect2(1350, 196, 72, 14), Rect2(1580, 172, 76, 14), Rect2(1810, 152, 72, 14), Rect2(2040, 172, 80, 14), Rect2(2270, 190, 72, 14), Rect2(2500, 168, 76, 14), Rect2(2730, 178, 80, 14)])
+
+hazard_rects = Array[Rect2]([Rect2(650, 262, 48, 10), Rect2(1400, 262, 48, 10)])
+item_positions = Array[Vector2]([Vector2(450, 240), Vector2(1950, 240)])
+item_types = PackedStringArray("health", "shield")
+npc_positions = Array[Vector2]([Vector2(150, 255)])
+npc_names = PackedStringArray("ECO")
+npc_dialogs = PackedStringArray("Este lugar existe entre los recuerdos. Ten cuidado donde pisas.")
+npc_colors = Array[Color]([Color(0.5, 0.9, 1.0, 1.0)])

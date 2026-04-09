@@ -25,3 +25,11 @@ level_end_x = 3380.0
 level_length = 3700.0
 crouch_barrier_rects = Array[Rect2]([Rect2(820, 229, 110, 18), Rect2(1490, 229, 100, 18), Rect2(2390, 229, 110, 18)])
 platform_rects = Array[Rect2]([Rect2(200, 224, 80, 14), Rect2(430, 206, 75, 14), Rect2(660, 219, 75, 14), Rect2(890, 201, 80, 14), Rect2(1120, 215, 75, 14), Rect2(1350, 197, 80, 14), Rect2(1580, 211, 75, 14), Rect2(1810, 194, 80, 14), Rect2(2040, 208, 75, 14), Rect2(2270, 192, 80, 14), Rect2(2500, 206, 75, 14), Rect2(2730, 191, 80, 14), Rect2(2960, 204, 75, 14), Rect2(3190, 203, 85, 14)])
+
+hazard_rects = Array[Rect2]([Rect2(750, 262, 48, 10), Rect2(1500, 262, 32, 10), Rect2(2250, 262, 48, 10)])
+item_positions = Array[Vector2]([Vector2(600, 240), Vector2(2400, 240)])
+item_types = PackedStringArray("health", "shield")
+npc_positions = Array[Vector2]([Vector2(150, 255)])
+npc_names = PackedStringArray("IRIS")
+npc_dialogs = PackedStringArray("El espejo no miente. La colección es perfecta... ¿o no?")
+npc_colors = Array[Color]([Color(0.9, 0.4, 0.9, 1.0)])

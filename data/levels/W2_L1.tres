@@ -25,3 +25,11 @@ level_end_x = 2350.0
 level_length = 2650.0
 crouch_barrier_rects = Array[Rect2]([Rect2(800, 229, 110, 18), Rect2(1520, 229, 110, 18)])
 platform_rects = Array[Rect2]([Rect2(180, 232, 100, 14), Rect2(420, 218, 100, 14), Rect2(660, 231, 90, 14), Rect2(900, 217, 100, 14), Rect2(1140, 230, 90, 14), Rect2(1380, 215, 100, 14), Rect2(1620, 229, 90, 14), Rect2(1860, 214, 100, 14), Rect2(2100, 227, 90, 14), Rect2(2350, 217, 100, 14)])
+
+hazard_rects = Array[Rect2]([Rect2(780, 262, 32, 10), Rect2(1540, 262, 32, 10)])
+item_positions = Array[Vector2]([Vector2(350, 248), Vector2(1900, 248)])
+item_types = PackedStringArray("speed_boost", "health")
+npc_positions = Array[Vector2]([Vector2(150, 255)])
+npc_names = PackedStringArray("MILA")
+npc_dialogs = PackedStringArray("El backstage es un caos. ¡No te pierdas antes del desfile!")
+npc_colors = Array[Color]([Color(1.0, 0.5, 0.8, 1.0)])

@@ -25,3 +25,11 @@ level_end_x = 2700.0
 level_length = 3050.0
 crouch_barrier_rects = Array[Rect2]([Rect2(720, 229, 110, 18), Rect2(1460, 229, 100, 18), Rect2(2220, 229, 110, 18)])
 platform_rects = Array[Rect2]([Rect2(180, 236, 90, 14), Rect2(410, 222, 90, 14), Rect2(640, 221, 90, 14), Rect2(870, 208, 95, 14), Rect2(1100, 207, 95, 14), Rect2(1330, 222, 90, 14), Rect2(1580, 221, 90, 14), Rect2(1810, 205, 95, 14), Rect2(2040, 222, 90, 14), Rect2(2270, 208, 95, 14), Rect2(2500, 222, 90, 14), Rect2(2740, 233, 90, 14)])
+
+hazard_rects = Array[Rect2]([Rect2(850, 262, 32, 10), Rect2(1720, 262, 48, 10), Rect2(2310, 262, 32, 10)])
+item_positions = Array[Vector2]([Vector2(450, 240), Vector2(2100, 240)])
+item_types = PackedStringArray("shield", "health")
+npc_positions = Array[Vector2]([Vector2(150, 255)])
+npc_names = PackedStringArray("CORA")
+npc_dialogs = PackedStringArray("Los corales son hermosos... pero pinchan. ¡Salta alto!")
+npc_colors = Array[Color]([Color(1.0, 0.4, 0.6, 1.0)])

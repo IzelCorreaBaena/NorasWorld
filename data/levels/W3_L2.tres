@@ -25,3 +25,11 @@ level_end_x = 2900.0
 level_length = 3250.0
 crouch_barrier_rects = Array[Rect2]([Rect2(810, 229, 110, 18), Rect2(1520, 229, 100, 18), Rect2(2200, 229, 110, 18)])
 platform_rects = Array[Rect2]([Rect2(180, 231, 90, 14), Rect2(420, 215, 90, 14), Rect2(660, 228, 85, 14), Rect2(900, 211, 90, 14), Rect2(1140, 220, 85, 14), Rect2(1380, 207, 90, 14), Rect2(1620, 219, 85, 14), Rect2(1860, 206, 90, 14), Rect2(2100, 218, 85, 14), Rect2(2340, 205, 90, 14), Rect2(2580, 218, 85, 14), Rect2(2820, 224, 90, 14)])
+
+hazard_rects = Array[Rect2]([Rect2(700, 262, 48, 10), Rect2(1450, 262, 32, 10), Rect2(2150, 262, 32, 10)])
+item_positions = Array[Vector2]([Vector2(500, 240), Vector2(2300, 240)])
+item_types = PackedStringArray("shield", "health")
+npc_positions = Array[Vector2]([Vector2(150, 255)])
+npc_names = PackedStringArray("ZURU")
+npc_dialogs = PackedStringArray("Las raíces del bosque guardan secretos. Escucha el viento.")
+npc_colors = Array[Color]([Color(0.3, 0.8, 0.3, 1.0)])
