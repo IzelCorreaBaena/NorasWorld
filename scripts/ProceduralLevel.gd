@@ -43,6 +43,14 @@ const THEME_PLATFORM_REGIONS := {
 	"studio" : Rect2(  0,   0, 500,  80),
 	"secret" : Rect2(  0,   0, 500,  80),
 }
+# Pequeño tile de suelo que se repite (para el suelo del nivel)
+const THEME_FLOOR_REGIONS := {
+	"beach"  : Rect2(  0,   0,  64,  24),
+	"city"   : Rect2(  0, 100,  80,  25),
+	"tribe"  : Rect2(  0,   0,  80,  30),
+	"studio" : Rect2(  0,   0,  80,  27),
+	"secret" : Rect2(  0,   0,  80,  27),
+}
 
 var _player    : Node2D
 var _hud       : Node
@@ -138,7 +146,7 @@ func _apply_theme() -> void:
 	sky_layer.motion_scale     = Vector2(0.0, 0.0)
 	sky_layer.motion_mirroring = Vector2(0.0, 0.0)
 	var sky_rect := ColorRect.new()
-	sky_rect.size  = Vector2(1920.0, 270.0)
+	sky_rect.size  = Vector2(4000.0, 270.0)
 	sky_rect.color = c["bg"]
 	sky_layer.add_child(sky_rect)
 	parallax.add_child(sky_layer)
@@ -147,12 +155,15 @@ func _apply_theme() -> void:
 	var scene_tex := load(assets["scene"]) as Texture2D
 	if scene_tex:
 		var scene_layer := ParallaxLayer.new()
+		# 1536x1024 a proporcion correcta: ancho = 1536*(270/1024) = 405 unidades
+		# Muestra la imagen COMPLETA sin recorte, misma razon de aspecto 1.5:1
+		var scene_w := scene_tex.get_width() * (270.0 / scene_tex.get_height())
 		scene_layer.motion_scale     = Vector2(0.25, 0.0)
-		scene_layer.motion_mirroring = Vector2(480.0, 0.0)
+		scene_layer.motion_mirroring = Vector2(scene_w, 0.0)
 		var bg_rect := TextureRect.new()
 		bg_rect.texture        = scene_tex
-		bg_rect.stretch_mode   = TextureRect.STRETCH_KEEP_ASPECT_COVERED
-		bg_rect.size           = Vector2(480.0, 270.0)
+		bg_rect.stretch_mode   = TextureRect.STRETCH_SCALE
+		bg_rect.size           = Vector2(scene_w, 270.0)
 		bg_rect.position       = Vector2(0.0, 0.0)
 		bg_rect.texture_filter = CanvasItem.TEXTURE_FILTER_LINEAR
 		scene_layer.add_child(bg_rect)
@@ -261,19 +272,27 @@ func _make_platform_visual(size: Vector2, theme: String, is_floor: bool = false)
 	body.color = c["floor"] if is_floor else c["plat"]
 	root.add_child(body)
 
-	# Capa 2 — strip de textura solo en la superficie superior
+	# Capa 2 — strip de textura en la superficie superior
 	var tileset_tex := load(assets["tileset"]) as Texture2D
 	if tileset_tex:
 		var atlas := AtlasTexture.new()
-		atlas.atlas  = tileset_tex
-		atlas.region = region
-		var strip_h  = min(size.y, 10.0) if not is_floor else min(size.y * 0.4, 10.0)
+		atlas.atlas = tileset_tex
 		var tex := TextureRect.new()
-		tex.texture        = atlas
-		tex.size           = Vector2(size.x, strip_h)
-		tex.position       = Vector2(0.0, 0.0)
-		tex.stretch_mode   = TextureRect.STRETCH_TILE
 		tex.texture_filter = CanvasItem.TEXTURE_FILTER_LINEAR
+		if is_floor:
+			# Suelo: tile pequeño que se repite horizontalmente
+			atlas.region   = THEME_FLOOR_REGIONS.get(theme, THEME_FLOOR_REGIONS["beach"])
+			var strip_h    = min(size.y * 0.35, 12.0)
+			tex.size       = Vector2(size.x, strip_h)
+			tex.position   = Vector2(0.0, 0.0)
+			tex.stretch_mode = TextureRect.STRETCH_TILE
+		else:
+			# Plataforma: escala la región al tamaño exacto de la plataforma
+			atlas.region   = region
+			tex.size       = size
+			tex.position   = Vector2(0.0, 0.0)
+			tex.stretch_mode = TextureRect.STRETCH_SCALE
+		tex.texture = atlas
 		root.add_child(tex)
 
 	return root

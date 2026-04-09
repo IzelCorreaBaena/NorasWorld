@@ -58,13 +58,14 @@ func _spawn_background() -> void:
 	if scene_path_tex != "":
 		var scene_tex := load(scene_path_tex) as Texture2D
 		if scene_tex != null:
+			var scene_w := scene_tex.get_width() * (270.0 / scene_tex.get_height())
 			var scene_layer := ParallaxLayer.new()
 			scene_layer.motion_scale     = Vector2(0.25, 0.0)
-			scene_layer.motion_mirroring = Vector2(480.0, 0.0)
+			scene_layer.motion_mirroring = Vector2(scene_w, 0.0)
 			var bg_rect := TextureRect.new()
 			bg_rect.texture        = scene_tex
-			bg_rect.stretch_mode   = TextureRect.STRETCH_KEEP_ASPECT_COVERED
-			bg_rect.size           = Vector2(480.0, 270.0)
+			bg_rect.stretch_mode   = TextureRect.STRETCH_SCALE
+			bg_rect.size           = Vector2(scene_w, 270.0)
 			bg_rect.position       = Vector2(0.0, 0.0)
 			bg_rect.texture_filter = CanvasItem.TEXTURE_FILTER_LINEAR
 			scene_layer.add_child(bg_rect)
