@@ -37,35 +37,39 @@ var _health_before   : int
 var _timer_node      : Node
 
 func _spawn_background() -> void:
-	var bg_color := WORLD_BG_COLORS.get(level_id, Color(0.05, 0.05, 0.1))
-	var bg := ColorRect.new()
-	bg.offset_left   = -500.0
-	bg.offset_top    = -600.0
-	bg.offset_right  = 3000.0
-	bg.offset_bottom = 1000.0
-	bg.color   = bg_color
-	bg.z_index = -10
-	add_child(bg)
+	var bg_color = WORLD_BG_COLORS.get(level_id, Color(0.05, 0.05, 0.1))
 
-	var scene_path_tex := WORLD_SCENE_ASSETS.get(level_id, "")
-	if scene_path_tex == "":
-		return
-	var scene_tex := load(scene_path_tex) as Texture2D
-	if scene_tex == null:
-		return
+	# Todo en un ParallaxBackground (layer=-10) — cielo + escena visibles
 	var parallax := ParallaxBackground.new()
-	parallax.layer = -9
-	var layer := ParallaxLayer.new()
-	layer.motion_scale     = Vector2(0.3, 0.0)
-	layer.motion_mirroring = Vector2(480.0, 0.0)
-	var bg_rect := TextureRect.new()
-	bg_rect.texture        = scene_tex
-	bg_rect.stretch_mode   = TextureRect.STRETCH_KEEP_ASPECT_COVERED
-	bg_rect.size           = Vector2(480.0, 270.0)
-	bg_rect.position       = Vector2(0.0, 0.0)
-	bg_rect.texture_filter = CanvasItem.TEXTURE_FILTER_LINEAR
-	layer.add_child(bg_rect)
-	parallax.add_child(layer)
+	parallax.layer = -10
+
+	# Capa 1 — cielo sólido (sin scroll)
+	var sky_layer := ParallaxLayer.new()
+	sky_layer.motion_scale     = Vector2(0.0, 0.0)
+	sky_layer.motion_mirroring = Vector2(0.0, 0.0)
+	var sky_rect := ColorRect.new()
+	sky_rect.size  = Vector2(1920.0, 270.0)
+	sky_rect.color = bg_color
+	sky_layer.add_child(sky_rect)
+	parallax.add_child(sky_layer)
+
+	# Capa 2 — escena del mundo (parallax 25%)
+	var scene_path_tex = WORLD_SCENE_ASSETS.get(level_id, "")
+	if scene_path_tex != "":
+		var scene_tex := load(scene_path_tex) as Texture2D
+		if scene_tex != null:
+			var scene_layer := ParallaxLayer.new()
+			scene_layer.motion_scale     = Vector2(0.25, 0.0)
+			scene_layer.motion_mirroring = Vector2(480.0, 0.0)
+			var bg_rect := TextureRect.new()
+			bg_rect.texture        = scene_tex
+			bg_rect.stretch_mode   = TextureRect.STRETCH_KEEP_ASPECT_COVERED
+			bg_rect.size           = Vector2(480.0, 270.0)
+			bg_rect.position       = Vector2(0.0, 0.0)
+			bg_rect.texture_filter = CanvasItem.TEXTURE_FILTER_LINEAR
+			scene_layer.add_child(bg_rect)
+			parallax.add_child(scene_layer)
+
 	add_child(parallax)
 
 func _ready() -> void:
@@ -156,4 +160,3 @@ func _on_player_died() -> void:
 
 func _on_collectible_found(id: String) -> void:
 	GameManager.collect_pin(id)
-

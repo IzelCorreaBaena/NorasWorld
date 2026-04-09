@@ -33,9 +33,9 @@ const THEME_ASSETS := {
 	"secret" : {"scene": "res://assets/world5_scene.png",        "tileset": "res://assets/world5_tileset.png"},
 }
 
-// REGION DEL TILESET PARA SUPERFICIE DE PLATAFORMA
-// Rect2(x, y, w, h) dentro del tileset: solo el tile de superficie plana.
-// beach: 1024x1024 | city/tribe/studio/secret: 2816x1536
+#REGION DEL TILESET PARA SUPERFICIE DE PLATAFORMA
+# Rect2(x, y, w, h) dentro del tileset: solo el tile de superficie plana.
+# beach: 1024x1024 | city/tribe/studio/secret: 2816x1536
 const THEME_PLATFORM_REGIONS := {
 	"beach"  : Rect2(  0,   0, 256,  80),
 	"city"   : Rect2(  0, 100, 500,  50),
@@ -127,33 +127,38 @@ func _apply_theme() -> void:
 	var c       = THEME_COLORS.get(theme, THEME_COLORS["beach"])
 	var assets  = THEME_ASSETS.get(theme, THEME_ASSETS["beach"])
 
-	# Fondo sólido de color (siempre, como capa base z=-10)
-	var bg := ColorRect.new()
-	bg.offset_left   = -500.0
-	bg.offset_top    = -600.0
-	bg.offset_right  = data.level_length + 500.0
-	bg.offset_bottom = 1000.0
-	bg.color   = c["bg"]
-	bg.z_index = -10
-	add_child(bg)
+	# ── FONDO: todo dentro del ParallaxBackground (layer=-10) ──────────────
+	# El ColorRect externo tapaba el parallax. Ahora cielo + escena están
+	# en el mismo CanvasLayer, correctamente apilados y visibles.
+	var parallax := ParallaxBackground.new()
+	parallax.layer = -10
 
-	# Fondo parallax con la scene image — viewport 480x270, layer=-9
+	# Capa 1 — cielo sólido (sin parallax, cubre toda la pantalla)
+	var sky_layer := ParallaxLayer.new()
+	sky_layer.motion_scale     = Vector2(0.0, 0.0)
+	sky_layer.motion_mirroring = Vector2(0.0, 0.0)
+	var sky_rect := ColorRect.new()
+	sky_rect.size  = Vector2(1920.0, 270.0)
+	sky_rect.color = c["bg"]
+	sky_layer.add_child(sky_rect)
+	parallax.add_child(sky_layer)
+
+	# Capa 2 — escena del mundo (parallax lento, tileado cada viewport)
 	var scene_tex := load(assets["scene"]) as Texture2D
 	if scene_tex:
-		var parallax := ParallaxBackground.new()
-		parallax.layer = -9
-		var layer := ParallaxLayer.new()
-		layer.motion_scale     = Vector2(0.3, 0.0)
-		layer.motion_mirroring = Vector2(480.0, 0.0)
+		var scene_layer := ParallaxLayer.new()
+		scene_layer.motion_scale     = Vector2(0.25, 0.0)
+		scene_layer.motion_mirroring = Vector2(480.0, 0.0)
 		var bg_rect := TextureRect.new()
 		bg_rect.texture        = scene_tex
 		bg_rect.stretch_mode   = TextureRect.STRETCH_KEEP_ASPECT_COVERED
 		bg_rect.size           = Vector2(480.0, 270.0)
 		bg_rect.position       = Vector2(0.0, 0.0)
 		bg_rect.texture_filter = CanvasItem.TEXTURE_FILTER_LINEAR
-		layer.add_child(bg_rect)
-		parallax.add_child(layer)
-		add_child(parallax)
+		scene_layer.add_child(bg_rect)
+		parallax.add_child(scene_layer)
+
+	add_child(parallax)
 
 	# Actualizar colores del suelo manual si existe
 	var floor_vis := get_node_or_null("Floor/FloorVisual")
@@ -262,7 +267,7 @@ func _make_platform_visual(size: Vector2, theme: String, is_floor: bool = false)
 		var atlas := AtlasTexture.new()
 		atlas.atlas  = tileset_tex
 		atlas.region = region
-		var strip_h  := min(size.y, 10.0) if not is_floor else min(size.y * 0.4, 10.0)
+		var strip_h  = min(size.y, 10.0) if not is_floor else min(size.y * 0.4, 10.0)
 		var tex := TextureRect.new()
 		tex.texture        = atlas
 		tex.size           = Vector2(size.x, strip_h)
