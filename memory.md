@@ -106,6 +106,10 @@
 - EnemyFlying.gd ← agente godot-2d-mechanic-builder
 - EnemyJumper.gd ← agente godot-2d-mechanic-builder
 - BossFinal.gd ← agente godot-2d-mechanic-builder
+- CrouchBarrier.gd ← agente godot-2d-mechanic-builder
+- Hazard.gd ← agente godot-2d-mechanic-builder
+- Item.gd ← agente godot-2d-mechanic-builder
+- NPCAlly.gd ← agente godot-2d-mechanic-builder
 - WorldHub.gd ← agente game-integration-builder
 - Title.gd ← agente game-integration-builder
 - PauseMenu.gd ← agente game-integration-builder
@@ -113,6 +117,10 @@
 ### scenes/
 - EnemyFlying.tscn ← agente godot-2d-mechanic-builder
 - EnemyJumper.tscn ← agente godot-2d-mechanic-builder
+- CrouchBarrier.tscn ← agente godot-2d-mechanic-builder
+- Hazard.tscn ← agente godot-2d-mechanic-builder
+- Item.tscn ← agente godot-2d-mechanic-builder
+- NPCAlly.tscn ← agente godot-2d-mechanic-builder
 - Title.tscn ← agente game-integration-builder
 - PauseMenu.tscn ← agente game-integration-builder
 - World1-5.tscn (WorldHub) ← agente game-integration-builder
@@ -125,16 +133,36 @@
 - W1_L1.tres ... W5_L4.tres (20 LevelData resources) ← agente 2d-physics-engineer
 
 ## MODIFICACIONES A ARCHIVOS EXISTENTES
-- LevelData.gd: +platform_rects: Array[Rect2]
-- ProceduralLevel.gd: +_spawn_platforms(), actualizar _spawn_enemies() para tipos flying/jumper, +pause menu
+- LevelData.gd: +platform_rects, +crouch_barrier_rects, +hazard_rects, +item_positions/types, +npc_positions/names/dialogs/colors
+- ProceduralLevel.gd: +_spawn_platforms(), _spawn_enemies() tipos, pause menu, +_spawn_hazards/items/npcs
 - Main.gd: ir a Title.tscn en lugar de WorldMap.tscn
 - WorldMap.gd: añadir Mundo 5 al WORLD_DATA
 
 ## ERRORES CONOCIDOS
--
+
+### CRITICOS (bloquean integración de assets)
+- BUG-L2-01: W1_L2.tres incompleto — faltan hazard_rects, item_positions, item_types, npc_* (nivel sin contenido de gameplay)
+- BUG-L3-01: W1_L3.tres incompleto — mismos campos faltantes que L2
+- BUG-L4-01: W1_L4.tres incompleto — mismos campos faltantes; nivel pre-boss sin items de salud = desbalanceado
+
+### MEDIOS
+- BUG-HUD-01: HUD.gd:172 — Boss bar usa anchor_right en lugar de size.x; fill incorrecto visualmente
+- BUG-PL-02: ProceduralLevel.gd:80 — PauseMenu cargado con load() sin null check; crash potencial si falla
+
+### BAJOS
+- BUG-HUD-02: HUD.gd:249 — busqueda get_nodes_in_group("level") cada frame para LevelTimer; usar referencia directa
+- BUG-HUD-03: HUD.gd:244 — show_item_pickup ejecuta tween aunque item_type no matchee ningun caso
+- BUG-PL-03: ProceduralLevel.gd:196 — BG ColorRect con offsets en Node2D; riesgo visual con zoom de camara
+
+### PATRON RECURRENTE
+W1_L2, L3 y L4 fueron creados ANTES de que LevelData.gd recibiera los campos hazard/item/npc.
+Verificar que W2-W5 tengan el mismo problema (probable que todos los .tres de mundos 2-5 esten incompletos).
 
 ## ÚLTIMA ACCIÓN
-- 2026-04-07: BUILD COMPLETADO — 3 agentes finalizados + correcciones manuales
+- 2026-04-08: QA audit W1 + HUD. 3 bugs criticos encontrados en .tres L2/L3/L4. 5 bugs adicionales documentados.
+- 2026-04-07: Hazard.gd, Item.gd, NPCAlly.gd + escenas .tscn creados
+- LevelData.gd extendido con hazard_rects, item_positions/types, npc_positions/names/dialogs/colors
+- ProceduralLevel.gd extendido con _spawn_hazards(), _spawn_items(), _spawn_npcs()
 
 ### RESUMEN DEL BUILD
 ✅ LevelData.gd + platform_rects añadido

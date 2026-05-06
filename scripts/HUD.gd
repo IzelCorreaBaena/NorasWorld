@@ -42,6 +42,7 @@ func _ready() -> void:
 		_connect_boss(boss)
 	get_tree().node_added.connect(func(n):
 		if n.is_in_group("boss"): _connect_boss(n)
+		if n.name == "LevelTimer": _timer_node = n
 	)
 
 func _update_hearts(hp: int) -> void:
@@ -129,9 +130,8 @@ func _build_boss_bar() -> void:
 
 	_boss_bar_fill = ColorRect.new()
 	_boss_bar_fill.color = Color(0.85, 0.15, 0.15)
-	_boss_bar_fill.set_anchors_preset(Control.PRESET_FULL_RECT)
-	_boss_bar_fill.offset_left  = 2.0
-	_boss_bar_fill.offset_right = -2.0
+	_boss_bar_fill.set_anchors_preset(Control.PRESET_TOP_LEFT)
+	_boss_bar_fill.offset_right = 0
 	_boss_bar_fill.offset_top   = 2.0
 	_boss_bar_fill.offset_bottom = -2.0
 	_boss_bar_bg.add_child(_boss_bar_fill)
@@ -169,7 +169,7 @@ func _update_boss_bar_from_boss(boss: Node) -> void:
 func _update_boss_bar(current_health: int) -> void:
 	if _boss_max <= 0: return
 	var pct := float(current_health) / float(_boss_max)
-	_boss_bar_fill.anchor_right = pct
+	_boss_bar_fill.size.x = _boss_bar_bg.size.x * pct
 	# Color por fase
 	if   pct > 0.66: _boss_bar_fill.color = Color(0.85, 0.15, 0.15)
 	elif pct > 0.33: _boss_bar_fill.color = Color(0.85, 0.55, 0.10)
@@ -209,7 +209,7 @@ func setup_level_progress(length: float) -> void:
 
 func _update_progress(player_x: float) -> void:
 	if _progress_fill == null or _level_length <= 0: return
-	var pct := clamp(player_x / _level_length, 0.0, 1.0)
+	var pct = clamp(player_x / _level_length, 0.0, 1.0)
 	var bar_w := _progress_bar.size.x
 	_progress_fill.size.x = bar_w * pct
 	if   pct > 0.8: _progress_fill.color = Color(0.2, 0.9, 0.3, 0.9)
@@ -241,6 +241,8 @@ func show_item_pickup(item_type: String) -> void:
 		"shield":
 			_item_notif_label.text = "+ Escudo"
 			_item_notif_label.add_theme_color_override("font_color", Color(0.3, 0.85, 1.0))
+		_:
+			return
 	var tw := create_tween()
 	tw.tween_property(_item_notif_label, "modulate:a", 1.0, 0.15)
 	tw.tween_interval(1.0)
@@ -251,12 +253,9 @@ func _process(_delta: float) -> void:
 	if boss and is_instance_valid(boss) and "health" in boss:
 		_update_boss_bar(boss.health)
 	# Actualizar timer
-	if _timer_label and _timer_label.visible:
-		for node in get_tree().get_nodes_in_group("level"):
-			var t := node.get_node_or_null("LevelTimer")
-			if t and "elapsed" in t:
-				set_timer(t.elapsed)
-				break
+	if _timer_label and _timer_label.visible and _timer_node:
+		if "elapsed" in _timer_node:
+			set_timer(_timer_node.elapsed)
 	# Actualizar barra de progreso
 	if _progress_fill != null:
 		for node in get_tree().get_nodes_in_group("player"):

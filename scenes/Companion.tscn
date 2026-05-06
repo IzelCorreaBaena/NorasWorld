@@ -1,0 +1,17 @@
+[gd_scene load_steps=3 format=3 uid="uid://companion_scene"]
+
+[ext_resource type="Script" path="res://scripts/CompanionAI.gd" id="1_companion"]
+
+[sub_resource type="CapsuleShape2D" id="RectangleShape2D_companion"]
+size = Vector2(20, 30)
+
+[node name="Companion" type="CharacterBody2D"]
+script = ExtResource("1_companion")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+shape = SubResource("RectangleShape2D_companion")
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+scale = Vector2(0.8, 0.8)
+
+[node name="NavigationAgent2D" type="NavigationAgent2D" parent="."]

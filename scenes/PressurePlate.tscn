@@ -1,0 +1,19 @@
+[gd_scene load_steps=3 format=3 uid="uid://p1q2r3s4t5u6v"]
+
+[ext_resource type="Script" path="res://scripts/PressurePlate.gd" id="1_plate"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_plate"]
+size = Vector2(40, 10)
+
+[node name="PressurePlate" type="Area2D"]
+script = ExtResource("1_plate")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+shape = SubResource("RectangleShape2D_plate")
+
+[node name="Visual" type="ColorRect" parent="."]
+offset_left = -20.0
+offset_top = -5.0
+offset_right = 20.0
+offset_bottom = 5.0
+color = Color(1, 0, 0, 0.5)

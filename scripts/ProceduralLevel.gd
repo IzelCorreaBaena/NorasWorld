@@ -105,8 +105,12 @@ func _ready() -> void:
 	)
 
 	# Pausa (ESC funciona vía PauseMenu._input)
-	var pause_menu = load("res://scenes/PauseMenu.tscn").instantiate()
-	add_child(pause_menu)
+	var pause_scene = load("res://scenes/PauseMenu.tscn")
+	if pause_scene:
+		var pause_menu = pause_scene.instantiate()
+		add_child(pause_menu)
+	else:
+		push_error("ProceduralLevel: No se pudo cargar PauseMenu.tscn")
 
 	# NG+
 	await get_tree().process_frame

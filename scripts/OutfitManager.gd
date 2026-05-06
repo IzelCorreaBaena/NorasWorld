@@ -55,5 +55,5 @@ static func has_water_slow_fall() -> bool:
 static func has_star_dash() -> bool:
 	return GameManager.current_outfit == "fashion_week"
 
-static func has_double_dash() -> bool:
-	return GameManager.current_outfit == "estilista_pro"
+static func has_wall_jump() -> bool:
+	return GameManager.current_outfit == "tribal"

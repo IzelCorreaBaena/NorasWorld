@@ -1,62 +1,37 @@
-[gd_scene format=3 uid="uid://player"]
+[gd_scene load_steps=4 format=3 uid="uid://c8k8p8p8p8p8p"]
 
-[ext_resource type="Script" uid="uid://clusymb1poroq" path="res://scripts/Player.gd" id="1_player"]
-[ext_resource type="Shader" uid="uid://djutumdat5v0o" path="res://assets/remove_background.gdshader" id="2_3li8b"]
-[ext_resource type="Script" uid="uid://7iga28wf6ywy" path="res://scripts/PlayerAnimator.gd" id="2_v6fml"]
+[ext_resource type="Script" path="res://scripts/Player.gd" id="1_player"]
+[ext_resource type="Texture2D" id="2_placeholder"]
 
-[sub_resource type="CapsuleShape2D" id="col_1"]
-radius = 12.0
-height = 36.0
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_collision"]
+size = Vector2(36, 64)
 
-[sub_resource type="ShaderMaterial" id="ShaderMaterial_mdl7e"]
-shader = ExtResource("2_3li8b")
-shader_parameter/bg_color = Color(0.745, 0.745, 0.745, 1)
-shader_parameter/threshold = 0.22000001045
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_wall"]
+size = Vector2(5, 5)
 
-[sub_resource type="SpriteFrames" id="frames_1"]
-animations = [{
-"frames": [],
-"loop": true,
-"name": &"fall",
-"speed": 6.0
-}, {
-"frames": [],
-"loop": true,
-"name": &"idle",
-"speed": 5.0
-}, {
-"frames": [],
-"loop": false,
-"name": &"jump",
-"speed": 6.0
-}, {
-"frames": [],
-"loop": true,
-"name": &"walk",
-"speed": 8.0
-}]
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_ledge"]
+size = Vector2(5, 5)
 
-[node name="Player" type="CharacterBody2D" unique_id=179117101]
-scale = Vector2(0.5, 0.5)
+[node name="Player" type="CharacterBody2D"]
 script = ExtResource("1_player")
 
-[node name="Collision" type="CollisionShape2D" parent="." unique_id=1650139138]
-shape = SubResource("col_1")
+[node name="Sprite2D" type="Sprite2D" parent="."]
+texture = ExtResource("2_placeholder")
 
-[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="." unique_id=423459495]
-material = SubResource("ShaderMaterial_mdl7e")
-scale = Vector2(0.09, 0.09)
-sprite_frames = SubResource("frames_1")
-animation = &"idle"
-script = ExtResource("2_v6fml")
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+shape = SubResource("RectangleShape2D_collision")
 
-[node name="Camera" type="Camera2D" parent="." unique_id=2101491043]
-limit_left = 0
-limit_top = -2000
-limit_right = 6000
-limit_bottom = 500
+[node name="Camera2D" type="Camera2D" parent="."]
 position_smoothing_enabled = true
-position_smoothing_speed = 6.0
 
-[node name="CoyoteGhost" type="GPUParticles2D" parent="." unique_id=561234618]
-emitting = false
+[node name="WallDetector" type="RayCast2D" parent="."]
+enabled = true
+target_position = Vector2(20, 0)
+
+[node name="LedgeDetector" type="RayCast2D" parent="."]
+enabled = true
+target_position = Vector2(20, -20)
+
+[node name="CoyoteTimer" type="Timer" parent="."]
+
+[node name="JumpBufferTimer" type="Timer" parent="."]

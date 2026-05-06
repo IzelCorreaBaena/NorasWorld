@@ -1,376 +1,257 @@
 extends CharacterBody2D
 
-# === CONSTANTS ===
-const SPEED           := 200.0
-const JUMP_VELOCITY   := -460.0
-const GRAVITY         := 900.0
-const FALL_GRAVITY_MULT := 1.5
-const MAX_FALL_SPEED  := 700.0
-const COYOTE_TIME     := 0.15
-const JUMP_BUFFER     := 0.12
-const INVINCIBLE_TIME := 1.5
-const KNOCKBACK       := 200.0
-const DASH_SPEED      := 500.0
-const DASH_TIME       := 0.18
-const WALL_JUMP_VX    := 250.0
-const WALL_JUMP_VY    := -380.0
-const WALL_SLIDE_MAX  := 80.0
-const CROUCH_SPEED_MULT := 0.6
-const CROUCH_HEIGHT   := 20.0   # reduced from 36
-const STAND_HEIGHT    := 36.0   # original capsule height
+## --- ENUMS ---
+enum State { IDLE, MOVE, AIR, WALL_SLIDE, LEDGE_HANG, DASH }
 
-# === STATE ===
-var coyote_timer     := 0.0
-var jump_buffer      := 0.0
-var was_on_floor     := false
-var facing_right     := true
-var is_dead          := false
-var is_invincible    := false
-var invincible_timer := 0.0
-var jumps_left       := 1
-var is_dashing       := false
-var dash_timer       := 0.0
-var dash_cooldown    := 0.0
-var can_dash         := true
-var dashes_left      := 1
-var in_water         := false
-var on_wall_left     := false
-var on_wall_right    := false
-var wall_jump_timer  := 0.0
-const WALL_JUMP_GRACE := 0.15
-var is_crouching     := false
+## --- CONFIGURACIÓN (Ajustable desde el Inspector) ---
+@export_group("Movimiento Base")
+@export var SPEED := 300.0
+@export var ACCELERATION := 1500.0
+@export var FRICTION := 1200.0
+@export var GRAVITY := 1100.0
+@export var FALL_GRAVITY_MULT := 1.5
 
-# === ONREADY NODES ===
-@onready var sprite    : AnimatedSprite2D = $AnimatedSprite2D
-@onready var camera    : Camera2D         = $Camera
-@onready var collision : CollisionShape2D = $Collision
+@export_group("Salto y Parkour")
+@export var JUMP_VELOCITY := -450.0
+@export var WALL_JUMP_VELOCITY := Vector2(350.0, -400.0)
+@export var WALL_SLIDE_SPEED := 80.0
+@export var COYOTE_TIME := 0.15
+@export var JUMP_BUFFER := 0.15
 
-# === SIGNALS ===
+@export_group("Dash")
+@export var DASH_SPEED := 600.0
+@export var DASH_DURATION := 0.2
+@export var DASH_COOLDOWN := 0.8
+@export var THROW_FORCE := 500.0
+
+@export_group("Interacción")
+@export var INTERACTION_RANGE := 50.0
+@export var THROW_FORCE := 500.0
+
+## --- VARIABLES DE ESTADO ---
+var current_state := State.IDLE
+var facing_direction := 1 # 1: Derecha, -1: Izquierda
+var is_dead := false
+var held_object : Node2D = null
+var dash_timer := 0.0
+var dash_cooldown_timer := 0.0
+
+## --- NODOS ---
+@onready var sprite := $AnimatedSprite2D
+@onready var collision := $CollisionShape2D
+@onready var wall_detector := $WallDetector
+@onready var ledge_detector := $LedgeDetector
+@onready var coyote_timer := $CoyoteTimer
+@onready var jump_buffer_timer := $JumpBufferTimer
+
+# Nodos de interacción dinámicos
+var interaction_ray : RayCast2D
+var hold_socket : Marker2D
+
+
+
+## --- SEÑALES ---
 signal player_died
 signal collectible_found(id: String)
-signal crouch_changed(crouching: bool)
 
 func _ready() -> void:
 	add_to_group("player")
 	GameManager.game_over.connect(_on_game_over)
-	_update_abilities()
-	if collision == null:
-		push_error("Player: Collision node not found")
-	for zone in get_tree().get_nodes_in_group("water_zone"):
-		if zone is Area2D:
-			zone.body_entered.connect(func(b): if b == self: in_water = true)
-			zone.body_exited.connect(func(b): if b == self: in_water = false)
+	
+	# Configuración de Timers
+	coyote_timer.wait_time = COYOTE_TIME
+	jump_buffer_timer.wait_time = JUMP_BUFFER
+	coyote_timer.one_shot = true
+	jump_buffer_timer.one_shot = true
+	
+	_setup_interaction_nodes()
 
-func _update_abilities() -> void:
-	jumps_left = 2 if GameManager.nora["has_double_jump"] else 1
+func _setup_interaction_nodes() -> void:
+	# Crear RayCast para interacción
+	interaction_ray = RayCast2D.new()
+	interaction_ray.enabled = true
+	interaction_ray.target_position = Vector2(INTERACTION_RANGE, 0)
+	add_child(interaction_ray)
+	
+	# Crear Socket para sostener objetos
+	hold_socket = Marker2D.new()
+	hold_socket.position = Vector2(0, -30)
+	add_child(hold_socket)
 
 func _physics_process(delta: float) -> void:
-	if is_dead:
-		return
-	_handle_invincibility(delta)
-	_handle_crouch()
-	_handle_dash(delta)
-	if not is_dashing:
-		_apply_gravity(delta)
-		_handle_coyote(delta)
-		_handle_jump_buffer(delta)
-		_handle_movement()
-		_handle_jump()
-		_handle_wall_jump(delta)
-	_flip_sprite()
-	_update_animation()
+	if is_dead: return
+	
+	if dash_cooldown_timer > 0:
+		dash_cooldown_timer -= delta
+
+	# 1. Gestión de Inputs y Buffers
+	_process_inputs()
+	
+	# 2. Máquina de Estados
+	match current_state:
+		State.IDLE, State.MOVE:
+			_state_ground(delta)
+		State.AIR:
+			_state_air(delta)
+		State.WALL_SLIDE:
+			_state_wall_slide(delta)
+		State.LEDGE_HANG:
+			_state_ledge_hang(delta)
+		State.DASH:
+			_state_dash(delta)
+
+	# 3. Ejecución de Movimiento
 	move_and_slide()
+	
+	# 4. Actualización de Visuales
+	_update_visuals()
 
+
+# --- LÓGICA DE ESTADOS ---
+
+func _process_inputs() -> void:
+	# Jump Buffer
+	if Input.is_action_just_pressed("ui_accept"):
+		jump_buffer_timer.start()
+	
+	# Coyote Time
 	if is_on_floor():
-		jumps_left  = 2 if GameManager.nora["has_double_jump"] else 1
-		dashes_left = 2 if OutfitManager.has_double_dash() else 1
-		wall_jump_timer = 0.0
-	was_on_floor = is_on_floor()
-	_detect_walls()
+		coyote_timer.start()
+	
+	# Dash
+	if Input.is_action_just_pressed("ui_select") and can_dash():
+		_start_dash()
 
-func _detect_walls() -> void:
-	on_wall_left  = is_on_wall() and get_wall_normal().x > 0
-	on_wall_right = is_on_wall() and get_wall_normal().x < 0
-
-# --- CROUCH ---
-func _handle_crouch() -> void:
-	var wants_crouch := Input.is_action_pressed("ui_down") and is_on_floor() and not is_dashing
-	if wants_crouch and not is_crouching:
-		_set_crouch(true)
-	elif not wants_crouch and is_crouching:
-		# Check if there is a ceiling preventing us from standing up
-		if _can_stand_up():
-			_set_crouch(false)
-		# else: stay crouching, ceiling is blocking
-
-func _set_crouch(crouch: bool) -> void:
-	if collision == null or collision.shape == null:
-		return
-	is_crouching = crouch
-	var shape: CapsuleShape2D = collision.shape as CapsuleShape2D
-	if shape == null:
-		push_error("Player: Collision shape is not CapsuleShape2D")
-		return
-
-	if crouch:
-		# Shrink capsule: reduce height, keep same radius
-		# Shift collision down so feet stay on ground
-		var height_diff := (STAND_HEIGHT - CROUCH_HEIGHT) * 0.5
-		shape.height = CROUCH_HEIGHT
-		collision.position.y += height_diff
-	else:
-		# Restore capsule to standing size
-		var height_diff := (STAND_HEIGHT - CROUCH_HEIGHT) * 0.5
-		shape.height = STAND_HEIGHT
-		collision.position.y -= height_diff
-
-	crouch_changed.emit(is_crouching)
-
-func _can_stand_up() -> bool:
-	if collision == null or collision.shape == null:
-		return true
-	# Temporarily restore shape to standing to test if we fit
-	var shape: CapsuleShape2D = collision.shape as CapsuleShape2D
-	if shape == null:
-		return true
-	var old_height := shape.height
-	var old_pos    := collision.position
-	var height_diff := (STAND_HEIGHT - CROUCH_HEIGHT) * 0.5
-
-	shape.height = STAND_HEIGHT
-	collision.position.y = old_pos.y - height_diff
-
-	# test_move checks if moving by zero would cause a collision
-	var blocked := test_move(global_transform, Vector2.ZERO)
-
-	# Restore crouch shape
-	shape.height = old_height
-	collision.position = old_pos
-	return not blocked
-
-# --- GRAVITY ---
-func _apply_gravity(delta: float) -> void:
-	if not is_on_floor():
-		var max_fall := MAX_FALL_SPEED
-		var grav     := GRAVITY
-		# Apply stronger gravity when falling (not rising)
-		if velocity.y > 0:
-			grav *= FALL_GRAVITY_MULT
-		# Outfit surfera: slow fall in water
-		if in_water and OutfitManager.has_water_slow_fall():
-			max_fall = 80.0
-			grav     = GRAVITY * 0.3
-		if _is_wall_sliding():
-			velocity.y = min(velocity.y + grav * delta, WALL_SLIDE_MAX)
+	# Interaction: Recoger/Soltar (ui_context para interactuar)
+	if Input.is_action_just_pressed("ui_context"):
+		if held_object:
+			_throw_object()
 		else:
-			velocity.y = min(velocity.y + grav * delta, max_fall)
+			_try_pickup()
+
+
+
+
+func _state_ground(delta: float) -> void:
+	var direction := Input.get_axis("ui_left", "ui_right")
+	
+	# Movimiento
+	if direction != 0:
+		velocity.x = move_toward(velocity.x, direction * SPEED, ACCELERATION * delta)
+		facing_direction = direction
+		current_state = State.MOVE
 	else:
-		velocity.y = 0.0
+		velocity.x = move_toward(velocity.x, 0, FRICTION * delta)
+		current_state = State.IDLE
+	
+	# Salto
+	if jump_buffer_timer.is_stopped() == false and not coyote_timer.is_stopped():
+		_perform_jump()
+	
+	if not is_on_floor():
+		current_state = State.AIR
+	
+	if Input.is_action_just_pressed("ui_select") and can_dash():
+		_start_dash()
 
-func _is_wall_sliding() -> bool:
-	if not GameManager.nora["has_wall_jump"]:
-		return false
-	if wall_jump_timer > 0:
-		return false
-	return is_on_wall() and not is_on_floor() and velocity.y > 0
-
-func _handle_coyote(delta: float) -> void:
-	if was_on_floor and not is_on_floor():
-		coyote_timer = COYOTE_TIME
-	elif coyote_timer > 0:
-		coyote_timer -= delta
-
-func _handle_jump_buffer(delta: float) -> void:
-	if Input.is_action_just_pressed("jump"):
-		jump_buffer = JUMP_BUFFER
-	elif jump_buffer > 0:
-		jump_buffer -= delta
-
-func _handle_movement() -> void:
-	var dir := Input.get_axis("move_left", "move_right")
-	var current_speed := SPEED
-	if is_crouching:
-		current_speed *= CROUCH_SPEED_MULT
-	if dir != 0:
-		velocity.x = dir * current_speed
+func _state_air(delta: float) -> void:
+	var gravity_to_apply = GRAVITY
+	if velocity.y > 0: gravity_to_apply *= FALL_GRAVITY_MULT
+	velocity.y += gravity_to_apply * delta
+	
+	var direction := Input.get_axis("ui_left", "ui_right")
+	if direction != 0:
+		velocity.x = move_toward(velocity.x, direction * SPEED, ACCELERATION * 0.5 * delta)
+		facing_direction = direction
 	else:
-		velocity.x = move_toward(velocity.x, 0, current_speed * 0.25)
+		velocity.x = move_toward(velocity.x, 0, FRICTION * 0.5 * delta)
+		
+	if is_on_floor():
+		current_state = State.IDLE
+	elif is_on_wall() and velocity.y > 0:
+		current_state = State.WALL_SLIDE
+	elif wall_detector.is_colliding() and not ledge_detector.is_colliding():
+		current_state = State.LEDGE_HANG
 
-func _handle_jump() -> void:
-	# Cannot jump while crouching
-	if is_crouching:
-		return
-	var can_jump_coyote := is_on_floor() or coyote_timer > 0
-	if jump_buffer > 0:
-		if can_jump_coyote and jumps_left > 0:
-			_do_jump()
-		elif GameManager.nora["has_double_jump"] and jumps_left > 0 and not can_jump_coyote and not is_on_wall():
-			_do_jump()
-	if Input.is_action_just_released("jump") and velocity.y < 0:
-		velocity.y *= 0.45
+func _state_wall_slide(delta: float) -> void:
+	velocity.y = min(velocity.y + GRAVITY * delta, WALL_SLIDE_SPEED)
+	
+	if jump_buffer_timer.is_stopped() == false:
+		var normal = get_wall_normal()
+		velocity.x = normal.x * WALL_JUMP_VELOCITY.x
+		velocity.y = WALL_JUMP_VELOCITY.y
+		jump_buffer_timer.stop()
+		current_state = State.AIR
+		
+	if is_on_floor():
+		current_state = State.IDLE
+	elif not is_on_wall():
+		current_state = State.AIR
 
-func _handle_wall_jump(delta: float) -> void:
-	if wall_jump_timer > 0:
-		wall_jump_timer -= delta
-	if not GameManager.nora["has_wall_jump"]:
-		return
-	if is_on_floor() or wall_jump_timer > 0:
-		return
-	if not is_on_wall():
-		return
-	if jump_buffer > 0:
-		var wall_normal := get_wall_normal()
-		velocity.x = wall_normal.x * WALL_JUMP_VX
-		velocity.y = WALL_JUMP_VY
-		jumps_left      = 1
-		jump_buffer     = 0.0
-		wall_jump_timer = WALL_JUMP_GRACE
-		facing_right = velocity.x > 0
-		sprite.flip_h = not facing_right
+func _state_ledge_hang(delta: float) -> void:
+	velocity = Vector2.ZERO
+	if jump_buffer_timer.is_stopped() == false:
+		_perform_jump()
+		current_state = State.AIR
+	if Input.is_action_just_pressed("ui_down"):
+		current_state = State.AIR
+	if not wall_detector.is_colliding():
+		current_state = State.AIR
 
-func _do_jump() -> void:
-	velocity.y   = JUMP_VELOCITY
-	jumps_left  -= 1
-	coyote_timer = 0
-	jump_buffer  = 0
+func _state_dash(delta: float) -> void:
+	dash_timer -= delta
+	velocity.x = facing_direction * DASH_SPEED
+	velocity.y = 0
+	
+	if dash_timer <= 0:
+		_end_dash()
 
-func _handle_dash(delta: float) -> void:
-	if not GameManager.nora["has_dash"]:
-		return
-	if dash_cooldown > 0:
-		dash_cooldown -= delta
-		can_dash = false
+func _end_dash() -> void:
+	current_state = State.AIR
+
+func _update_visuals() -> void:
+	sprite.flip_h = (facing_direction == -1)
+	wall_detector.target_position.x = abs(wall_detector.target_position.x) * facing_direction
+	ledge_detector.target_position.x = abs(ledge_detector.target_position.x) * facing_direction
+	
+	if current_state == State.LEDGE_HANG:
+		sprite.modulate = Color(0.7, 0.7, 0.7)
 	else:
-		can_dash = dashes_left > 0
-	if Input.is_action_just_pressed("dash") and can_dash and not is_dashing:
-		is_dashing    = true
-		dash_timer    = DASH_TIME
-		dashes_left  -= 1
-		can_dash      = false
-		if OutfitManager.has_star_dash():
-			_spawn_star_trail()
-	if is_dashing:
-		dash_timer -= delta
-		velocity.x = (1.0 if facing_right else -1.0) * DASH_SPEED
-		velocity.y = 0
-		if dash_timer <= 0:
-			is_dashing    = false
-			dash_cooldown = 0.6
+		sprite.modulate = Color.WHITE
+	
+	_update_animation()
 
-func _spawn_star_trail() -> void:
-	var particles := CPUParticles2D.new()
-	particles.one_shot             = true
-	particles.emitting             = true
-	particles.amount               = 12
-	particles.lifetime             = 0.4
-	particles.spread               = 30.0
-	particles.direction            = Vector2(-1.0 if facing_right else 1.0, 0.0)
-	particles.gravity              = Vector2.ZERO
-	particles.initial_velocity_min = 60.0
-	particles.initial_velocity_max = 120.0
-	particles.scale_amount_min     = 2.0
-	particles.scale_amount_max     = 4.0
-	particles.color                = Color(1.0, 0.3, 0.7, 1.0)
-	get_parent().add_child(particles)
-	particles.global_position = global_position
-	get_tree().create_timer(0.5).timeout.connect(particles.queue_free)
-
-func _flip_sprite() -> void:
-	# Wall slide: face toward the wall
-	if _is_wall_sliding():
-		if on_wall_left:
-			sprite.flip_h = true
-			facing_right = false
-		elif on_wall_right:
-			sprite.flip_h = false
-			facing_right = true
-		return
-	if velocity.x > 0.1:
-		sprite.flip_h = false
-		facing_right  = true
-	elif velocity.x < -0.1:
-		sprite.flip_h = true
-		facing_right  = false
 
 func _update_animation() -> void:
-	if not sprite.sprite_frames:
-		return
-	if is_dashing:
-		if sprite.sprite_frames.has_animation("walk"):
-			if sprite.animation != "walk":
-				sprite.play("walk")
-			sprite.speed_scale = 2.5
-		return
-	sprite.speed_scale = 1.0
-
-	# Crouch animation
-	if is_crouching:
-		if sprite.sprite_frames.has_animation("crouch"):
-			if sprite.animation != "crouch":
-				sprite.play("crouch")
-		else:
-			# Fallback: use idle with squash tint
-			if sprite.animation != "idle":
-				sprite.play("idle")
-			sprite.modulate = Color(0.85, 0.85, 0.95, 1.0) if not is_invincible else sprite.modulate
-		return
-	else:
-		# Restore modulate when not crouching (only if not invincible)
-		if not is_invincible:
-			sprite.modulate = Color.WHITE
-
-	if _is_wall_sliding():
-		if sprite.sprite_frames.has_animation("fall") and sprite.animation != "fall":
-			sprite.play("fall")
-	elif not is_on_floor():
-		if velocity.y < 0:
-			if sprite.sprite_frames.has_animation("jump") and sprite.animation != "jump":
-				sprite.play("jump")
-		else:
-			if sprite.sprite_frames.has_animation("fall") and sprite.animation != "fall":
-				sprite.play("fall")
-	elif abs(velocity.x) > 10:
-		if sprite.sprite_frames.has_animation("walk") and sprite.animation != "walk":
-			sprite.play("walk")
-	else:
-		if sprite.sprite_frames.has_animation("idle") and sprite.animation != "idle":
+	if not sprite.sprite_frames: return
+	
+	match current_state:
+		State.IDLE:
 			sprite.play("idle")
+		State.MOVE:
+			sprite.play("walk")
+		State.AIR:
+			if velocity.y < 0: sprite.play("jump")
+			else: sprite.play("fall")
+		State.WALL_SLIDE:
+			sprite.play("wall_slide")
+		State.DASH:
+			sprite.play("dash")
+		State.LEDGE_HANG:
+			sprite.play("ledge_hang")
+	
+	# Speed scale for dash
+	if current_state == State.DASH:
+		sprite.speed_scale = 2.0
+	else:
+		sprite.speed_scale = 1.0
 
-func _handle_invincibility(delta: float) -> void:
-	if is_invincible:
-		invincible_timer -= delta
-		sprite.modulate.a = 0.4 if fmod(invincible_timer, 0.15) > 0.075 else 1.0
-		if invincible_timer <= 0:
-			is_invincible     = false
-			sprite.modulate.a = 1.0
 
-func take_damage(from_position: Vector2 = Vector2.ZERO) -> void:
-	if is_invincible or is_dead:
-		return
-	# Force stand up when taking damage
-	if is_crouching:
-		_set_crouch(false)
-	is_invincible    = true
-	invincible_timer = INVINCIBLE_TIME
-	var dir := int(sign(global_position.x - from_position.x))
-	if dir == 0:
-		dir = 1
-	velocity = Vector2(float(dir) * KNOCKBACK, -220.0)
-	GameManager.take_damage()
 
 func _on_game_over() -> void:
 	die()
 
 func die() -> void:
-	if is_dead:
-		return
+	if is_dead: return
 	is_dead = true
-	emit_signal("player_died")
-	var tween := create_tween()
-	tween.tween_property(self, "modulate:a", 0.0, 0.5)
-	tween.tween_callback(func():
-		get_tree().change_scene_to_file("res://scenes/GameOver.tscn")
-	)
-
-func collect(id: String) -> void:
-	emit_signal("collectible_found", id)
+	player_died.emit()
